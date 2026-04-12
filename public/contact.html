@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & Help - SafeTrace AI</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="/" class="nav-logo" aria-label="SafeTrace AI Home">
+        <svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="8" fill="#156082"/><path d="M18 6L8 12v8c0 6.5 4.3 12.6 10 14 5.7-1.4 10-7.5 10-14v-8L18 6z" fill="none" stroke="white" stroke-width="2"/><circle cx="18" cy="16" r="3" fill="white"/><path d="M13 24c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="white" stroke-width="2" fill="none"/></svg>
+        SafeTrace AI
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/">Home</a><a href="/report">Report</a><a href="/dashboard">Dashboard</a><a href="/about">About</a><a href="/contact" class="active">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="/login" class="btn btn-primary btn-sm">Login</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" onclick="toggleMobile()"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <div class="breadcrumb"><a href="/">Home</a><span>/</span><span>Contact & Help</span></div>
+        <h1>Contact & Help Center</h1>
+        <p>Get in touch with our team or find answers to common questions.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="grid grid-2" style="gap:48px;">
+          <!-- Contact Form -->
+          <div>
+            <h2 style="font-size:1.5rem; margin-bottom:8px;">Send Us a Message</h2>
+            <p style="margin-bottom:28px; font-size:0.9rem;">Have a question, concern, or need assistance? Fill out the form and we'll respond promptly.</p>
+            <form id="contactForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="cName">Your Name <span class="required">*</span></label>
+                  <input type="text" id="cName" class="form-input" placeholder="Enter your name" required>
+                  <div class="form-error">Please enter your name</div>
+                </div>
+                <div class="form-group">
+                  <label for="cEmail">Email <span class="required">*</span></label>
+                  <input type="email" id="cEmail" class="form-input" placeholder="your@email.com" required>
+                  <div class="form-error">Please enter a valid email</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cSubject">Subject</label>
+                <select id="cSubject" class="form-input">
+                  <option value="">Select a topic</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="report">Missing Person Report</option>
+                  <option value="technical">Technical Support</option>
+                  <option value="partnership">Partnership</option>
+                  <option value="privacy">Data Privacy</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cMessage">Message <span class="required">*</span></label>
+                <textarea id="cMessage" class="form-input" placeholder="How can we help?" required style="min-height:140px;"></textarea>
+                <div class="form-error">Please enter your message</div>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h2 style="font-size:1.5rem; margin-bottom:8px;">Other Ways to Reach Us</h2>
+            <p style="margin-bottom:28px; font-size:0.9rem;">For urgent matters, please contact us directly through the channels below.</p>
+            <div class="card" style="margin-bottom:16px;">
+              <div style="display:flex; gap:16px; align-items:flex-start;">
+                <div class="card-icon" style="margin-bottom:0; flex-shrink:0;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-size:1rem;">Email</h4>
+                  <p style="font-size:0.875rem; margin-top:4px;">support@safetrace.ai</p>
+                  <p style="font-size:0.8rem;">Response within 24 hours</p>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:16px;">
+              <div style="display:flex; gap:16px; align-items:flex-start;">
+                <div class="card-icon" style="margin-bottom:0; flex-shrink:0;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-size:1rem;">Phone</h4>
+                  <p style="font-size:0.875rem; margin-top:4px;">+91 141 399 9100</p>
+                  <p style="font-size:0.8rem;">Mon-Fri, 9:00 AM - 6:00 PM IST</p>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:16px;">
+              <div style="display:flex; gap:16px; align-items:flex-start;">
+                <div class="card-icon" style="margin-bottom:0; flex-shrink:0;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-size:1rem;">Address</h4>
+                  <p style="font-size:0.875rem; margin-top:4px;">Manipal University Jaipur</p>
+                  <p style="font-size:0.8rem;">Dehmi Kalan, Jaipur, Rajasthan 303007</p>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="border-color:var(--danger);">
+              <div style="display:flex; gap:16px; align-items:flex-start;">
+                <div class="card-icon" style="margin-bottom:0; flex-shrink:0; background:var(--danger-bg); color:var(--danger);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-size:1rem; color:var(--danger);">Emergency Helpline</h4>
+                  <p style="font-size:0.875rem; margin-top:4px; font-weight:600;">Dial 112 or 1098 (Childline India)</p>
+                  <p style="font-size:0.8rem;">For immediate emergencies, contact local authorities first.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-alt" aria-label="Frequently asked questions">
+      <div class="container" style="max-width:800px;">
+        <div class="text-center">
+          <span class="section-label">FAQ</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Find answers to common questions about SafeTrace AI.</p>
+        </div>
+        <div style="margin-top:40px;">
+          <div class="faq-item open">
+            <button class="faq-question" aria-expanded="true">
+              How does AI matching work?
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" style="max-height:200px;">
+              <div class="faq-answer-inner">Our system uses deep learning-based facial recognition (similar to FaceNet and ArcFace architectures) to create a unique 128-dimensional embedding of each face. When a new photo is uploaded, the system compares this embedding against our database of known missing persons. The AI analyzes facial features including bone structure, eye spacing, and other unique markers, providing a confidence score for each potential match. This process happens in real-time and works even with varying lighting conditions, angles, and partial occlusions.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Is my data secure?
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">Absolutely. SafeTrace AI implements enterprise-grade security measures including AES-256 encryption for data at rest, TLS 1.3 for data in transit, and role-based access control (RBAC). We follow GDPR and Indian data protection guidelines. Only authorized personnel can access case data, and all access is logged with complete audit trails. Photos and personal information are never shared with third parties.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Who can file a missing person report?
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">Anyone can file a missing person report through our platform -- family members, friends, neighbors, or authorities. We recommend also filing an official FIR (First Information Report) with your local police station. Our platform works alongside law enforcement, not as a replacement. For children under 18, reports are given priority processing.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              How accurate is the facial recognition?
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">Our facial recognition system achieves over 98% accuracy on standard benchmarks (LFW, CFP). In real-world conditions, accuracy varies based on image quality, lighting, and age difference between photos. Clear, front-facing photos with good lighting yield the best results. The system also performs age progression estimation for cases involving children who have been missing for extended periods.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              What happens after I submit a report?
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">After submission, the AI immediately begins analyzing the uploaded photos and searching for matches. You'll receive a case ID and can track progress through the dashboard. If matches are found, you and registered authorities will receive real-time notifications. The system continuously monitors new data and sightings, running periodic re-analyses to catch new matches as they become available.</div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Is SafeTrace AI free to use?
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">Yes, SafeTrace AI is completely free for families and individuals reporting missing persons. The platform is developed as a public safety initiative by Manipal University Jaipur. Law enforcement agencies and NGOs can also use the platform at no cost. We are funded through university research grants and aim to keep the platform accessible to everyone.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo" style="color:white;">
+            <svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="8" fill="#156082"/><path d="M18 6L8 12v8c0 6.5 4.3 12.6 10 14 5.7-1.4 10-7.5 10-14v-8L18 6z" fill="none" stroke="white" stroke-width="2"/><circle cx="18" cy="16" r="3" fill="white"/><path d="M13 24c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="white" stroke-width="2" fill="none"/></svg>
+            SafeTrace AI
+          </a>
+          <p>Revolutionizing public safety with AI-driven facial recognition and real-time tracking technology.</p>
+        </div>
+        <div><h4>Platform</h4><ul><li><a href="/report">Report Missing</a></li><li><a href="/dashboard">Dashboard</a></li><li><a href="/about">About Us</a></li><li><a href="/contact">Contact</a></li></ul></div>
+        <div><h4>Resources</h4><ul><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="/contact">FAQ</a></li></ul></div>
+        <div><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Data Protection</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Manipal University Jaipur. All rights reserved.</span>
+        <div style="display:flex; gap:24px;"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p>Sending message...</p></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-answer').style.maxHeight = '0';
+          i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Contact form
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fields = [
+        { id: 'cName', msg: 'Name is required' },
+        { id: 'cEmail', msg: 'Email is required' },
+        { id: 'cMessage', msg: 'Message is required' },
+      ];
+      let valid = true;
+      fields.forEach(f => {
+        const el = document.getElementById(f.id);
+        const group = el.closest('.form-group');
+        if (!el.value.trim()) { group.classList.add('error'); valid = false; }
+        else { group.classList.remove('error'); }
+      });
+      if (!valid) { showToast('Please fill in all required fields', 'error'); return; }
+
+      showLoading();
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: document.getElementById('cName').value,
+            email: document.getElementById('cEmail').value,
+            subject: document.getElementById('cSubject').value,
+            message: document.getElementById('cMessage').value,
+          }),
+        });
+        const result = await res.json();
+        hideLoading();
+        if (result.success) {
+          showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
+          document.getElementById('contactForm').reset();
+        }
+      } catch (err) {
+        hideLoading();
+        showToast('Failed to send message. Please try again.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

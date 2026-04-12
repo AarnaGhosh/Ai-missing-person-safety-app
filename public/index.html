@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI-Powered Missing Person and Safety System - Revolutionizing public safety with facial recognition and real-time tracking.">
+  <title>SafeTrace AI - Missing Person & Safety System</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="/" class="nav-logo" aria-label="SafeTrace AI Home">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="8" fill="#156082"/>
+          <path d="M18 6L8 12v8c0 6.5 4.3 12.6 10 14 5.7-1.4 10-7.5 10-14v-8L18 6z" fill="none" stroke="white" stroke-width="2"/>
+          <circle cx="18" cy="16" r="3" fill="white"/>
+          <path d="M13 24c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="white" stroke-width="2" fill="none"/>
+        </svg>
+        SafeTrace AI
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/" class="active">Home</a>
+        <a href="/report">Report</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <div class="nav-search" role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search cases..." aria-label="Search cases">
+        </div>
+        <button class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="/login" class="btn btn-primary btn-sm">Login</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu" onclick="toggleMobile()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero hero-split" aria-label="Hero">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="float-orb float-orb-1" aria-hidden="true"></div>
+      <div class="float-orb float-orb-2" aria-hidden="true"></div>
+      <div class="float-orb float-orb-3" aria-hidden="true"></div>
+      <div class="container hero-container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            AI-Powered Safety Platform
+          </div>
+          <h1>AI-Powered <span>Missing Person</span> and Safety System</h1>
+          <p>Revolutionizing public safety with AI-driven facial recognition and real-time tracking to find missing individuals faster.</p>
+          <div class="hero-buttons">
+            <a href="/report" class="btn btn-primary btn-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              Report Missing Person
+            </a>
+            <a href="/login" class="btn btn-secondary btn-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Login to Dashboard
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat" data-animate>
+              <h3 id="statCases">0</h3>
+              <p>Cases Processed</p>
+            </div>
+            <div class="hero-stat" data-animate>
+              <h3 id="statRecovery">0%</h3>
+              <p>Faster Recovery</p>
+            </div>
+            <div class="hero-stat" data-animate>
+              <h3 id="statAccuracy">0%</h3>
+              <p>AI Accuracy</p>
+            </div>
+            <div class="hero-stat" data-animate>
+              <h3 id="statAgencies">0+</h3>
+              <p>Partner Agencies</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Panel -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-visual-card">
+            <div class="hvc-header">
+              <div class="hvc-dot red"></div><div class="hvc-dot yellow"></div><div class="hvc-dot green"></div>
+              <span>AI Analysis — Live</span>
+            </div>
+            <div class="hvc-scan">
+              <div class="scan-face">
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="40" cy="30" r="18" stroke="#156082" stroke-width="2"/>
+                  <path d="M14 70c0-14.36 11.64-26 26-26s26 11.64 26 26" stroke="#156082" stroke-width="2"/>
+                  <circle cx="33" cy="27" r="3" fill="#156082"/>
+                  <circle cx="47" cy="27" r="3" fill="#156082"/>
+                  <path d="M34 36c1.5 2 4.5 2 6 0" stroke="#156082" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <div class="scan-line"></div>
+                <div class="scan-corners">
+                  <span class="corner tl"></span><span class="corner tr"></span>
+                  <span class="corner bl"></span><span class="corner br"></span>
+                </div>
+              </div>
+              <div class="hvc-match-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Match Found — 94%
+              </div>
+            </div>
+            <div class="hvc-stats">
+              <div class="hvc-stat"><span>Cases Today</span><strong>47</strong></div>
+              <div class="hvc-stat"><span>Matches</span><strong>12</strong></div>
+              <div class="hvc-stat"><span>Accuracy</span><strong>98%</strong></div>
+            </div>
+            <div class="hvc-alert">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              Alert sent to authorities
+            </div>
+          </div>
+          <div class="hero-visual-ping ping-1"></div>
+          <div class="hero-visual-ping ping-2"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Wave divider -->
+    <div class="wave-divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:48px">
+        <path d="M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,48 L0,48 Z" fill="var(--gray-50)"/>
+      </svg>
+    </div>
+
+    <!-- How It Works -->
+    <section class="section section-alt" aria-label="How it works">
+      <div class="container text-center">
+        <span class="section-label">Process</span>
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Our streamlined 4-step process leverages AI to accelerate the search and recovery of missing persons.</p>
+        <div class="steps">
+          <div class="step" data-animate>
+            <div class="step-number">1</div>
+            <div class="step-connector"></div>
+            <h4>Upload Photo</h4>
+            <p>Submit photos and details of the missing person through our secure platform.</p>
+          </div>
+          <div class="step" data-animate>
+            <div class="step-number">2</div>
+            <div class="step-connector"></div>
+            <h4>AI Analysis</h4>
+            <p>Our facial recognition engine analyzes and matches against databases in real-time.</p>
+          </div>
+          <div class="step" data-animate>
+            <div class="step-number">3</div>
+            <div class="step-connector"></div>
+            <h4>Geo-Tracking</h4>
+            <p>Location data and sightings are mapped for coordinated search efforts.</p>
+          </div>
+          <div class="step" data-animate>
+            <div class="step-number">4</div>
+            <h4>Alert & Recover</h4>
+            <p>Instant alerts are sent to authorities and families when matches are found.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wave divider -->
+    <div class="wave-divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:48px">
+        <path d="M0,24 C360,0 720,48 1080,24 C1260,12 1380,36 1440,24 L1440,48 L0,48 Z" fill="var(--white)"/>
+      </svg>
+    </div>
+
+    <!-- Key Features -->
+    <section class="section" aria-label="Key features">
+      <div class="container text-center">
+        <span class="section-label">Features</span>
+        <h2 class="section-title">Key Features</h2>
+        <p class="section-subtitle">Built with cutting-edge technology to maximize effectiveness in missing person recovery.</p>
+        <div class="grid grid-4">
+          <div class="card" data-animate="scale">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M2 2l4 4M22 2l-4 4"/></svg>
+            </div>
+            <h3>Facial Recognition</h3>
+            <p>Advanced AI-powered facial matching technology with over 98% accuracy across diverse conditions.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3>Geo-Tagging</h3>
+            <p>Real-time location tracking and mapping of sightings for coordinated search operations.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3>Secure Database</h3>
+            <p>End-to-end encrypted storage with role-based access ensuring complete data privacy and protection.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <h3>Real-Time Alerts</h3>
+            <p>Instant notifications to families and authorities when potential matches are detected.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3>Live Dashboard</h3>
+            <p>Comprehensive monitoring dashboard for tracking cases, sightings, and investigation progress.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3>Multi-Agency</h3>
+            <p>Seamless collaboration between law enforcement, NGOs, and community organizations.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>AI Analytics</h3>
+            <p>Predictive analytics and pattern recognition to optimize search strategies and resource allocation.</p>
+          </div>
+          <div class="card" data-animate>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Data Privacy</h3>
+            <p>GDPR-compliant data handling with strict privacy controls and transparent audit trails.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics / Impact -->
+    <section class="section section-alt" aria-label="Impact statistics">
+      <div class="container text-center">
+        <span class="section-label">Impact</span>
+        <h2 class="section-title">Faster Recovery Through Automation</h2>
+        <p class="section-subtitle">Our AI-powered system dramatically reduces the time it takes to find missing individuals.</p>
+        <div class="grid grid-3" style="margin-top: 48px;">
+          <div class="card" data-animate style="text-align:center; padding:40px;">
+            <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:8px;">73%</div>
+            <h4>Faster Identification</h4>
+            <p style="margin-top:8px;">AI reduces manual identification time from days to minutes.</p>
+          </div>
+          <div class="card" data-animate style="text-align:center; padding:40px;">
+            <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:8px;">10K+</div>
+            <h4>Cases Resolved</h4>
+            <p style="margin-top:8px;">Successfully reuniting families across the nation.</p>
+          </div>
+          <div class="card" data-animate style="text-align:center; padding:40px;">
+            <div style="font-size:3rem; font-weight:800; color:var(--primary); margin-bottom:8px;">24/7</div>
+            <h4>Always Active</h4>
+            <p style="margin-top:8px;">Continuous monitoring and matching around the clock.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" aria-label="Testimonials">
+      <div class="container text-center">
+        <span class="section-label">Testimonials</span>
+        <h2 class="section-title">Trusted by Authorities</h2>
+        <p class="section-subtitle">Hear from law enforcement and families who have used our system.</p>
+        <div class="grid grid-3" style="margin-top:48px;">
+          <div class="card" data-animate style="text-align:left;">
+            <div style="display:flex; gap:4px; color:#f59e0b; margin-bottom:16px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p style="color:var(--text); font-style:italic; margin-bottom:20px; font-size:0.95rem;">"SafeTrace AI helped us locate a missing child within 48 hours. The facial recognition accuracy is remarkable."</p>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:40px; height:40px; border-radius:50%; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary);">RS</div>
+              <div>
+                <div style="font-weight:600; font-size:0.875rem;">Inspector R. Sharma</div>
+                <div style="font-size:0.775rem; color:var(--text-light);">Delhi Police</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-animate style="text-align:left;">
+            <div style="display:flex; gap:4px; color:#f59e0b; margin-bottom:16px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p style="color:var(--text); font-style:italic; margin-bottom:20px; font-size:0.95rem;">"The real-time alert system is a game changer. We received instant notifications the moment a match was found."</p>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:40px; height:40px; border-radius:50%; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary);">AP</div>
+              <div>
+                <div style="font-weight:600; font-size:0.875rem;">Anita Patel</div>
+                <div style="font-size:0.775rem; color:var(--text-light);">Family Member</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-animate style="text-align:left;">
+            <div style="display:flex; gap:4px; color:#f59e0b; margin-bottom:16px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p style="color:var(--text); font-style:italic; margin-bottom:20px; font-size:0.95rem;">"Integration with our existing systems was seamless. SafeTrace has become an essential tool in our operations."</p>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:40px; height:40px; border-radius:50%; background:var(--primary-bg); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary);">VK</div>
+              <div>
+                <div style="font-weight:600; font-size:0.875rem;">Director V. Kumar</div>
+                <div style="font-size:0.775rem; color:var(--text-light);">NGO SafeChild India</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+      <div class="container text-center">
+        <h2 style="color:white; margin-bottom:16px;">Every Second Counts</h2>
+        <p style="color:rgba(255,255,255,0.8); max-width:560px; margin:0 auto 32px; font-size:1.1rem;">Help us bring missing individuals home. Report a case now or join our network of safety organizations.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+          <a href="/report" class="btn btn-lg" style="background:white; color:var(--primary);">Report Missing Person</a>
+          <a href="/about" class="btn btn-lg" style="background:rgba(255,255,255,0.15); color:white; border:2px solid rgba(255,255,255,0.3);">Learn More</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo" style="color:white;">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="36" rx="8" fill="#156082"/>
+              <path d="M18 6L8 12v8c0 6.5 4.3 12.6 10 14 5.7-1.4 10-7.5 10-14v-8L18 6z" fill="none" stroke="white" stroke-width="2"/>
+              <circle cx="18" cy="16" r="3" fill="white"/>
+              <path d="M13 24c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="white" stroke-width="2" fill="none"/>
+            </svg>
+            SafeTrace AI
+          </a>
+          <p>Revolutionizing public safety with AI-driven facial recognition and real-time tracking technology.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+            <a href="#" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+            <a href="#" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="/report">Report Missing</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Reference</a></li>
+            <li><a href="/contact">FAQ</a></li>
+            <li><a href="#">Safety Tips</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Data Protection</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Manipal University Jaipur. All rights reserved.</span>
+        <div style="display:flex; gap:24px;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Template -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3 id="modalTitle">Confirmation</h3>
+      <p id="modalBody">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modalConfirm" onclick="closeModal()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p>Processing...</p>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
