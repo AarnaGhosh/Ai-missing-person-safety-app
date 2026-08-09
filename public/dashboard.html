@@ -278,6 +278,7 @@
               <thead>
 
                 <tr>
+                  <th>Photo</th>
                   <th>Case ID</th>
                   <th>Name</th>
                   <th>Age</th>
@@ -295,7 +296,7 @@
 
                 <tr>
 
-                  <td colspan="9"
+                  <td colspan="10"
                     style="text-align:center; padding:40px; color:var(--text-light);">
 
                     <div class="spinner"
@@ -968,8 +969,29 @@
 
 
             return `
-
               <tr>
+
+                <td>
+                  ${
+                    person.image_path
+                      ? `
+                        <img
+                          src="${API_BASE}/${person.image_path}"
+                          alt="${escapeHtml(name)}"
+                          style="
+                            width:60px;
+                            height:60px;
+                            object-fit:cover;
+                            border-radius:8px;
+                            cursor:pointer;
+                            border:1px solid var(--border);
+                          "
+                          onclick="window.open('${API_BASE}/${person.image_path}', '_blank')"
+                        >
+                      `
+                      : "No photo"
+                  }
+                </td>
 
                 <td
                   style="
@@ -1066,7 +1088,7 @@
 
           <tr>
 
-            <td colspan="9"
+            <td colspan="10"
               style="
                 text-align:center;
                 padding:40px;
