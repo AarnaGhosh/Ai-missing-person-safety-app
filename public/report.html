@@ -277,67 +277,140 @@
       });
     }
 
-    // Form submission
-    document.getElementById('reportForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const required = [
-        { id: 'fullName', msg: 'Full name is required' },
-        { id: 'age', msg: 'Age is required' },
-        { id: 'description', msg: 'Description is required' },
-        { id: 'lastSeenDate', msg: 'Date last seen is required' },
-        { id: 'lastSeenLocation', msg: 'Location is required' },
-        { id: 'contactName', msg: 'Your name is required' },
-        { id: 'contactEmail', msg: 'Email is required' },
-        { id: 'contactPhone', msg: 'Phone is required' },
-      ];
-      let valid = true;
-      required.forEach(field => {
-        const el = document.getElementById(field.id);
-        const group = el.closest('.form-group');
-        if (!el.value.trim()) {
-          group.classList.add('error');
-          valid = false;
-        } else {
-          group.classList.remove('error');
-        }
-      });
-      if (!valid) { showToast('Please fill in all required fields', 'error'); return; }
+// Form submission
+document.getElementById('reportForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-      showLoading();
-      try {
-        const data = {
-          fullName: document.getElementById('fullName').value,
-          age: document.getElementById('age').value,
-          gender: document.getElementById('gender').value,
-          height: document.getElementById('height').value,
-          description: document.getElementById('description').value,
-          lastSeenDate: document.getElementById('lastSeenDate').value,
-          lastSeenTime: document.getElementById('lastSeenTime').value,
-          lastSeenLocation: document.getElementById('lastSeenLocation').value,
-          circumstances: document.getElementById('circumstances').value,
-          contactName: document.getElementById('contactName').value,
-          contactEmail: document.getElementById('contactEmail').value,
-          contactPhone: document.getElementById('contactPhone').value,
-          relationship: document.getElementById('relationship').value,
-          aiAnalysis: document.getElementById('aiAnalysis').checked,
-          photos: uploadedFiles.length,
-        };
-        const res = await fetch('/api/report', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        const result = await res.json();
-        hideLoading();
-        if (result.success) {
-          document.getElementById('modalBody').textContent = 'Your report has been submitted successfully. Case ID: ' + result.caseId + '. You will receive updates at your email.';
-          showModal('Report Submitted');
-        }
-      } catch (err) {
-        hideLoading();
-        showToast('Submission failed. Please try again.', 'error');
+  const required = [
+    { id: 'fullName', msg: 'Full name is required' },
+    { id: 'age', msg: 'Age is required' },
+    { id: 'description', msg: 'Description is required' },
+    { id: 'lastSeenDate', msg: 'Date last seen is required' },
+    { id: 'lastSeenLocation', msg: 'Location is required' },
+    { id: 'contactName', msg: 'Your name is required' },
+    { id: 'contactEmail', msg: 'Email is required' },
+    { id: 'contactPhone', msg: 'Phone is required' }
+  ];
+
+  let valid = true;
+
+  required.forEach(field => {
+    const el = document.getElementById(field.id);
+    const group = el.closest('.form-group');
+
+    if (!el.value.trim()) {
+      group.classList.add('error');
+      valid = false;
+    } else {
+      group.classList.remove('error');
+    }
+  });
+
+  // Image is required by the FastAPI backend
+  if (uploadedFiles.length === 0) {
+    showToast('Please upload at least one photo', 'error');
+    valid = false;
+  }
+
+  if (!valid) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+
+  showLoading();
+
+  try {
+    // Your FastAPI backend accepts one image for each missing-person case.
+    const image = uploadedFiles[0];
+
+    const formData = new FormData();
+
+    formData.append('name',
+      document.getElementById('fullName').value
+    );
+
+    formData.append('age',
+      document.getElementById('age').value
+    );
+
+    formData.append('gender',
+      document.getElementById('gender').value
+    );
+
+    // Combine the frontend's extra information into the description
+    const description =
+      document.getElementById('description').value +
+      (document.getElementById('height').value
+        ? ` Height: ${document.getElementById('height').value} cm.`
+        : '') +
+      (document.getElementById('circumstances').value
+        ? ` Circumstances: ${document.getElementById('circumstances').value}`
+        : '');
+
+    formData.append('description', description);
+
+    formData.append('last_seen_location',
+      document.getElementById('lastSeenLocation').value
+    );
+
+    formData.append('last_seen_date',
+      document.getElementById('lastSeenDate').value
+    );
+
+    formData.append('reporter_name',
+      document.getElementById('contactName').value
+    );
+
+    formData.append('reporter_contact',
+      document.getElementById('contactPhone').value
+    );
+
+    formData.append('image', image);
+
+    const res = await fetch(
+      'https://traceai-backend-mw7v.onrender.com/api/persons',
+      {
+        method: 'POST',
+        body: formData
       }
-    });
+    );
+
+    const result = await res.json();
+
+    hideLoading();
+
+    if (!res.ok) {
+      console.error('Backend error:', result);
+
+      showToast(
+        result.detail
+          ? 'Error: ' + JSON.stringify(result.detail)
+          : 'Submission failed. Please try again.',
+        'error'
+      );
+
+      return;
+    }
+
+    // Successful response from FastAPI
+    document.getElementById('modalBody').textContent =
+      'Your report has been submitted successfully. Case ID: ' +
+      result.id +
+      '. The photo has been processed for AI facial recognition.';
+
+    showModal('Report Submitted');
+
+  } catch (err) {
+    console.error('Submission error:', err);
+
+    hideLoading();
+
+    showToast(
+      'Could not connect to the TraceAI server. Please try again.',
+      'error'
+    );
+  }
+});
   </script>
 </body>
 </html>
