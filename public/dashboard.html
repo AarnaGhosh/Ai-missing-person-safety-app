@@ -1,88 +1,306 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Dashboard - SafeTrace AI</title>
 
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <!-- Main stylesheet -->
   <link rel="stylesheet" href="/css/style.css">
 
-  <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>"
+  >
+
+  <style>
+    /* =====================================================
+       MAP
+    ====================================================== */
+
+    #dashboardMap {
+      width: 100%;
+      height: 500px;
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .map-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .map-header h3 {
+      margin-bottom: 6px;
+    }
+
+    .map-header p {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin: 0;
+    }
+
+    .map-info {
+      padding: 12px 20px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      border-top: 1px solid var(--border);
+    }
+
+    .map-legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .legend-missing {
+      background: #e74c3c;
+    }
+
+    .legend-found {
+      background: #27ae60;
+    }
+
+    .leaflet-popup-content {
+      line-height: 1.6;
+    }
+
+    .popup-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .popup-case {
+      color: #156082;
+      font-weight: 600;
+    }
+
+    .popup-status {
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      #dashboardMap {
+        height: 400px;
+      }
+    }
+  </style>
 </head>
+
 
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" role="navigation" aria-label="Main navigation">
+  <!-- =====================================================
+       NAVBAR
+  ====================================================== -->
+
+  <nav
+    class="navbar"
+    role="navigation"
+    aria-label="Main navigation"
+  >
+
     <div class="container">
 
-      <a href="/" class="nav-logo" aria-label="SafeTrace AI Home">
+      <a
+        href="/"
+        class="nav-logo"
+        aria-label="SafeTrace AI Home"
+      >
+
         <svg viewBox="0 0 36 36" fill="none">
-          <rect width="36" height="36" rx="8" fill="#156082"/>
-          <path d="M18 6L8 12v8c0 6.5 4.3 12.6 10 14 5.7-1.4 10-7.5 10-14v-8L18 6z"
-            fill="none" stroke="white" stroke-width="2"/>
-          <circle cx="18" cy="16" r="3" fill="white"/>
-          <path d="M13 24c0-2.8 2.2-5 5-5s5 2.2 5 5"
-            stroke="white" stroke-width="2" fill="none"/>
+
+          <rect
+            width="36"
+            height="36"
+            rx="8"
+            fill="#156082"
+          />
+
+          <path
+            d="M18 6L8 12v8c0 6.5 4.3 12.6 10 14 5.7-1.4 10-7.5 10-14v-8L18 6z"
+            fill="none"
+            stroke="white"
+            stroke-width="2"
+          />
+
+          <circle
+            cx="18"
+            cy="16"
+            r="3"
+            fill="white"
+          />
+
+          <path
+            d="M13 24c0-2.8 2.2-5 5-5s5 2.2 5 5"
+            stroke="white"
+            stroke-width="2"
+            fill="none"
+          />
+
         </svg>
+
         SafeTrace AI
+
       </a>
 
-      <div class="nav-links" id="navLinks">
-        <a href="/">Home</a>
-        <a href="/report">Report</a>
-        <a href="/dashboard" class="active">Dashboard</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
+
+      <div
+        class="nav-links"
+        id="navLinks"
+      >
+
+        <a href="/">
+          Home
+        </a>
+
+        <a href="/report">
+          Report
+        </a>
+
+        <a
+          href="/dashboard"
+          class="active"
+        >
+          Dashboard
+        </a>
+
+        <a href="/about">
+          About
+        </a>
+
+        <a href="/contact">
+          Contact
+        </a>
+
       </div>
+
 
       <div class="nav-actions">
 
-        <button class="theme-toggle"
+        <!-- Theme -->
+        <button
+          class="theme-toggle"
           aria-label="Toggle dark mode"
-          onclick="toggleTheme()">
+          onclick="toggleTheme()"
+        >
 
-          <svg class="icon-sun" width="18" height="18"
-            viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          <svg
+            class="icon-sun"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <circle
+              cx="12"
+              cy="12"
+              r="5"
+            />
+
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l-1.42-1.42M18.36 5.64l-1.42-1.42"
+            />
+
           </svg>
 
-          <svg class="icon-moon" width="18" height="18"
-            viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3
-              7 7 0 0 0 21 12.79z"/>
+
+          <svg
+            class="icon-moon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <path
+              d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+            />
+
           </svg>
 
         </button>
 
-        <button class="btn btn-ghost btn-sm notif-btn"
-          aria-label="Notifications">
 
-          <svg width="18" height="18"
-            viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
+        <!-- Notifications -->
+        <button
+          class="btn btn-ghost btn-sm notif-btn"
+          aria-label="Notifications"
+        >
 
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-9-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <path
+              d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-9-3-9"
+            />
+
+            <path
+              d="M13.73 21a2 2 0 0 1-3.46 0"
+            />
+
           </svg>
 
-          <span class="notif-badge">3</span>
+          <span class="notif-badge">
+            3
+          </span>
+
         </button>
 
-        <button class="btn btn-ghost btn-sm"
+
+        <!-- Logout -->
+        <button
+          class="btn btn-ghost btn-sm"
           id="logoutBtn"
-          onclick="handleLogout()">
+          onclick="handleLogout()"
+        >
           Logout
         </button>
 
-        <button class="mobile-toggle"
+
+        <!-- Mobile menu -->
+        <button
+          class="mobile-toggle"
           id="mobileToggle"
           aria-label="Toggle menu"
-          onclick="toggleMobile()">
+          onclick="toggleMobile()"
+        >
 
           <span></span>
           <span></span>
@@ -91,50 +309,96 @@
         </button>
 
       </div>
+
     </div>
+
   </nav>
 
 
-  <!-- HEADER -->
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
   <main>
 
+    <!-- Page header -->
     <div class="page-header">
+
       <div class="container">
 
         <div class="breadcrumb">
-          <a href="/">Home</a>
-          <span>/</span>
-          <span>Dashboard</span>
+
+          <a href="/">
+            Home
+          </a>
+
+          <span>
+            /
+          </span>
+
+          <span>
+            Dashboard
+          </span>
+
         </div>
 
-        <div class="flex-between"
-          style="flex-wrap:wrap; gap:16px;">
+
+        <div
+          class="flex-between"
+          style="flex-wrap: wrap; gap: 16px;"
+        >
 
           <div>
 
-            <h1>Case Dashboard</h1>
+            <h1>
+              Case Dashboard
+            </h1>
 
             <p>
               Welcome back,
-              <strong id="userName">Admin User</strong>.
+              <strong id="userName">
+                Admin User
+              </strong>.
               Monitor and manage active cases.
             </p>
 
           </div>
 
-          <div style="display:flex; gap:12px;">
 
-            <a href="/report"
-              class="btn btn-primary btn-sm">
+          <div
+            style="
+              display: flex;
+              gap: 12px;
+            "
+          >
 
-              <svg width="16" height="16"
+            <a
+              href="/report"
+              class="btn btn-primary btn-sm"
+            >
+
+              <svg
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2">
+                stroke-width="2"
+              >
 
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
+                <line
+                  x1="12"
+                  y1="5"
+                  x2="12"
+                  y2="19"
+                />
+
+                <line
+                  x1="5"
+                  y1="12"
+                  x2="19"
+                  y2="12"
+                />
 
               </svg>
 
@@ -142,18 +406,34 @@
 
             </a>
 
+
             <button
               class="btn btn-secondary btn-sm"
-              onclick="showToast('Refreshing data...', 'info'); loadCases();">
+              onclick="
+                showToast(
+                  'Refreshing data...',
+                  'info'
+                );
+                loadCases();
+              "
+            >
 
-              <svg width="16" height="16"
+              <svg
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2">
+                stroke-width="2"
+              >
 
-                <polyline points="23 4 23 10 17 10"/>
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                <polyline
+                  points="23 4 23 10 17 10"
+                />
+
+                <path
+                  d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"
+                />
 
               </svg>
 
@@ -166,62 +446,100 @@
         </div>
 
       </div>
+
     </div>
 
 
-    <!-- DASHBOARD -->
-    <section class="section"
-      style="padding-top:32px;">
+    <!-- =====================================================
+         DASHBOARD CONTENT
+    ====================================================== -->
+
+    <section
+      class="section"
+      style="padding-top: 32px;"
+    >
 
       <div class="container">
 
-
-        <!-- STATS -->
+        <!-- =================================================
+             STAT CARDS
+        ================================================== -->
 
         <div class="dash-cards">
 
           <div class="dash-card">
-            <div class="label">Total Cases</div>
-            <div class="value" id="totalCases">-</div>
+
+            <div class="label">
+              Total Cases
+            </div>
+
+            <div
+              class="value"
+              id="totalCases"
+            >
+              -
+            </div>
+
             <div class="change up">
               Live from backend
             </div>
+
           </div>
 
+
           <div class="dash-card">
-            <div class="label">Active Cases</div>
-            <div class="value"
+
+            <div class="label">
+              Active Cases
+            </div>
+
+            <div
+              class="value"
               id="activeCases"
-              style="color:var(--warning);">
+              style="color: var(--warning);"
+            >
               -
             </div>
 
             <div class="change up">
               Currently missing
             </div>
+
           </div>
 
-          <div class="dash-card">
-            <div class="label">Matched</div>
 
-            <div class="value"
+          <div class="dash-card">
+
+            <div class="label">
+              Matched
+            </div>
+
+            <div
+              class="value"
               id="matchedCases"
-              style="color:var(--accent);">
+              style="color: var(--accent);"
+            >
               -
             </div>
 
             <div class="change up">
               Backend status
             </div>
+
           </div>
+
 
           <div class="dash-card">
 
-            <div class="label">Resolved</div>
+            <div class="label">
+              Resolved
+            </div>
 
-            <div class="value"
+            <div
+              class="value"
               id="resolvedCases"
-              style="color:var(--success);">
+              style="color: var(--success);"
+            >
               -
             </div>
 
@@ -234,42 +552,55 @@
         </div>
 
 
-        <!-- TABS -->
+        <!-- =================================================
+             TABS
+        ================================================== -->
 
-        <div class="dash-tabs"
-          role="tablist">
+        <div
+          class="dash-tabs"
+          role="tablist"
+        >
 
           <button
             class="dash-tab active"
             data-tab="cases"
             role="tab"
-            onclick="switchTab('cases', this)">
+            onclick="switchTab('cases', this)"
+          >
             All Cases
           </button>
+
 
           <button
             class="dash-tab"
             data-tab="alerts"
             role="tab"
-            onclick="switchTab('alerts', this)">
+            onclick="switchTab('alerts', this)"
+          >
             Alerts
           </button>
+
 
           <button
             class="dash-tab"
             data-tab="map"
             role="tab"
-            onclick="switchTab('map', this)">
+            onclick="switchTab('map', this)"
+          >
             Map View
           </button>
 
         </div>
 
 
-        <!-- CASES -->
+        <!-- =================================================
+             CASES
+        ================================================== -->
 
-        <div id="tab-cases"
-          class="tab-content">
+        <div
+          id="tab-cases"
+          class="tab-content"
+        >
 
           <div class="table-wrap">
 
@@ -278,30 +609,69 @@
               <thead>
 
                 <tr>
-                  <th>Photo</th>
-                  <th>Case ID</th>
-                  <th>Name</th>
-                  <th>Age</th>
-                  <th>Last Seen</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>AI Confidence</th>
-                  <th>Matches</th>
-                  <th>Actions</th>
+
+                  <th>
+                    Photo
+                  </th>
+
+                  <th>
+                    Case ID
+                  </th>
+
+                  <th>
+                    Name
+                  </th>
+
+                  <th>
+                    Age
+                  </th>
+
+                  <th>
+                    Last Seen
+                  </th>
+
+                  <th>
+                    Date
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    AI Confidence
+                  </th>
+
+                  <th>
+                    Matches
+                  </th>
+
+                  <th>
+                    Actions
+                  </th>
+
                 </tr>
 
               </thead>
+
 
               <tbody id="casesTableBody">
 
                 <tr>
 
-                  <td colspan="10"
-                    style="text-align:center; padding:40px; color:var(--text-light);">
+                  <td
+                    colspan="10"
+                    style="
+                      text-align: center;
+                      padding: 40px;
+                      color: var(--text-light);
+                    "
+                  >
 
-                    <div class="spinner"
-                      style="margin:0 auto 12px;">
-                    </div>
+                    <div
+                      class="spinner"
+                      style="margin: 0 auto 12px;"
+                    ></div>
 
                     Loading cases...
 
@@ -318,77 +688,89 @@
         </div>
 
 
-        <!-- ALERTS -->
+        <!-- =================================================
+             ALERTS
+        ================================================== -->
 
-        <div id="tab-alerts"
+        <div
+          id="tab-alerts"
           class="tab-content"
-          style="display:none;">
+          style="display: none;"
+        >
 
-          <div class="grid"
-            style="gap:12px;">
+          <div
+            class="grid"
+            style="gap: 12px;"
+          >
 
-            <div class="card"
-              style="border-left:4px solid var(--danger); padding:20px 24px;">
+            <div
+              class="card"
+              style="
+                border-left: 4px solid var(--danger);
+                padding: 20px 24px;
+              "
+            >
 
-              <div class="flex-between">
+              <h4 style="font-size: 0.95rem;">
+                High-Confidence Match Detected
+              </h4>
 
-                <div>
-
-                  <h4 style="font-size:0.95rem;">
-                    High-Confidence Match Detected
-                  </h4>
-
-                  <p style="font-size:0.85rem; margin-top:4px;">
-                    AI matching alerts will appear here when available.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="card"
-              style="border-left:4px solid var(--warning); padding:20px 24px;">
-
-              <div class="flex-between">
-
-                <div>
-
-                  <h4 style="font-size:0.95rem;">
-                    New Sighting Reported
-                  </h4>
-
-                  <p style="font-size:0.85rem; margin-top:4px;">
-                    New sightings will appear here.
-                  </p>
-
-                </div>
-
-              </div>
+              <p
+                style="
+                  font-size: 0.85rem;
+                  margin-top: 4px;
+                "
+              >
+                AI matching alerts will appear here when available.
+              </p>
 
             </div>
 
 
-            <div class="card"
-              style="border-left:4px solid var(--success); padding:20px 24px;">
+            <div
+              class="card"
+              style="
+                border-left: 4px solid var(--warning);
+                padding: 20px 24px;
+              "
+            >
 
-              <div class="flex-between">
+              <h4 style="font-size: 0.95rem;">
+                New Sighting Reported
+              </h4>
 
-                <div>
+              <p
+                style="
+                  font-size: 0.85rem;
+                  margin-top: 4px;
+                "
+              >
+                New sightings will appear here.
+              </p>
 
-                  <h4 style="font-size:0.95rem;">
-                    Case Updates
-                  </h4>
+            </div>
 
-                  <p style="font-size:0.85rem; margin-top:4px;">
-                    Case status updates will appear here.
-                  </p>
 
-                </div>
+            <div
+              class="card"
+              style="
+                border-left: 4px solid var(--success);
+                padding: 20px 24px;
+              "
+            >
 
-              </div>
+              <h4 style="font-size: 0.95rem;">
+                Case Updates
+              </h4>
+
+              <p
+                style="
+                  font-size: 0.85rem;
+                  margin-top: 4px;
+                "
+              >
+                Case status updates will appear here.
+              </p>
 
             </div>
 
@@ -397,42 +779,71 @@
         </div>
 
 
-        <!-- MAP -->
+        <!-- =================================================
+             MAP
+        ================================================== -->
 
-        <div id="tab-map"
+        <div
+          id="tab-map"
           class="tab-content"
-          style="display:none;">
+          style="display: none;"
+        >
 
-          <div class="map-placeholder"
-            style="height:500px;">
+          <div
+            class="card"
+            style="
+              padding: 0;
+              overflow: hidden;
+            "
+          >
 
-            <div
-              style="text-align:center; position:relative; z-index:1;">
+            <div class="map-header">
 
-              <svg width="48" height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                style="margin:0 auto 12px; opacity:0.4;">
-
-                <path d="M21 10c0 7-9 13-9 13
-                  s-9-6-9-13a9 9 0 0 1 18 0z"/>
-
-                <circle cx="12" cy="10" r="3"/>
-
-              </svg>
-
-              <h3
-                style="font-size:1.1rem; margin-bottom:8px;">
-                Sightings Map View
+              <h3>
+                Missing Persons Map
               </h3>
 
-              <p style="font-size:0.875rem;">
-                Map integration can be connected using
-                Google Maps or Leaflet.js.
+              <p>
+                Last-known locations of reported cases
               </p>
 
+
+              <div class="map-legend">
+
+                <div class="legend-item">
+
+                  <span
+                    class="legend-dot legend-missing"
+                  ></span>
+
+                  Missing
+
+                </div>
+
+
+                <div class="legend-item">
+
+                  <span
+                    class="legend-dot legend-found"
+                  ></span>
+
+                  Found
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div id="dashboardMap"></div>
+
+
+            <div
+              class="map-info"
+              id="mapInfo"
+            >
+              Loading map data...
             </div>
 
           </div>
@@ -446,24 +857,42 @@
   </main>
 
 
-  <!-- FOOTER -->
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
 
-  <footer class="footer"
-    role="contentinfo">
+  <footer
+    class="footer"
+    role="contentinfo"
+  >
 
     <div class="container">
 
-      <div class="footer-bottom"
-        style="border-top:none;">
+      <div
+        class="footer-bottom"
+        style="border-top: none;"
+      >
 
         <span>
           &copy; 2026 Manipal University Jaipur.
           All rights reserved.
         </span>
 
-        <div style="display:flex; gap:24px;">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms</a>
+        <div
+          style="
+            display: flex;
+            gap: 24px;
+          "
+        >
+
+          <a href="#">
+            Privacy Policy
+          </a>
+
+          <a href="#">
+            Terms
+          </a>
+
         </div>
 
       </div>
@@ -473,52 +902,69 @@
   </footer>
 
 
-  <!-- TOAST -->
+  <!-- =====================================================
+       TOAST
+  ====================================================== -->
 
   <div
     class="toast-container"
     id="toastContainer"
-    aria-live="polite">
-  </div>
+    aria-live="polite"
+  ></div>
 
 
-  <!-- LOADING -->
+  <!-- =====================================================
+       LOADING
+  ====================================================== -->
 
   <div
     class="loading-overlay"
-    id="loadingOverlay">
+    id="loadingOverlay"
+  >
 
     <div class="spinner"></div>
-    <p>Loading...</p>
+
+    <p>
+      Loading...
+    </p>
 
   </div>
 
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
 
   <script src="/js/app.js"></script>
 
 
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
+
+
   <script>
 
-    /*
-     * ============================================================
-     * TRACEAI BACKEND
-     * ============================================================
-     */
+    /* =====================================================
+       API
+    ====================================================== */
 
     const API_BASE =
       "https://traceai-backend-mw7v.onrender.com";
 
 
-    /*
-     * ============================================================
-     * LOGIN CHECK
-     * ============================================================
-     */
+    /* =====================================================
+       LOGIN
+    ====================================================== */
 
     const user =
       JSON.parse(
-        localStorage.getItem("safetrace_user") || "null"
+        localStorage.getItem(
+          "safetrace_user"
+        ) || "null"
       );
+
 
     if (!user) {
 
@@ -528,108 +974,626 @@
     } else {
 
       const userName =
-        document.getElementById("userName");
+        document.getElementById(
+          "userName"
+        );
 
       if (userName) {
+
         userName.textContent =
           user.name || "Admin User";
+
       }
 
     }
 
 
-    /*
-     * ============================================================
-     * TAB SWITCHING
-     * ============================================================
-     */
+    /* =====================================================
+       MAP VARIABLES
+    ====================================================== */
 
-    function switchTab(tab, el) {
+    let dashboardMap = null;
+
+    let mapMarkers = [];
+
+    let allPersons = [];
+
+
+    const DEFAULT_LAT =
+      28.6139;
+
+    const DEFAULT_LNG =
+      77.2090;
+
+
+    /* =====================================================
+       LEAFLET MARKER ICON
+       FIXES THE YELLOW "M" / BROKEN MARKER ISSUE
+    ====================================================== */
+
+    const defaultMarkerIcon =
+      L.icon({
+
+        iconUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+
+        iconRetinaUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+
+        iconSize: [
+          25,
+          41
+        ],
+
+        iconAnchor: [
+          12,
+          41
+        ],
+
+        popupAnchor: [
+          1,
+          -34
+        ],
+
+        shadowSize: [
+          41,
+          41
+        ]
+
+      });
+
+
+    /* =====================================================
+       INITIALIZE MAP
+    ====================================================== */
+
+    function initializeDashboardMap() {
+
+      if (dashboardMap) {
+
+        return;
+
+      }
+
+
+      const mapElement =
+        document.getElementById(
+          "dashboardMap"
+        );
+
+
+      if (!mapElement) {
+
+        console.error(
+          "Dashboard map element not found."
+        );
+
+        return;
+
+      }
+
+
+      dashboardMap =
+        L.map(
+          "dashboardMap"
+        ).setView(
+          [
+            DEFAULT_LAT,
+            DEFAULT_LNG
+          ],
+          5
+        );
+
+
+      L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom: 19,
+
+          attribution:
+            "&copy; OpenStreetMap contributors"
+        }
+      ).addTo(
+        dashboardMap
+      );
+
+    }
+
+
+    /* =====================================================
+       EXTRACT GPS COORDINATES
+    ====================================================== */
+
+    function extractCoordinates(
+      description
+    ) {
+
+      if (!description) {
+
+        return null;
+
+      }
+
+
+      const regex =
+        /GPS\s*Coordinates\s*:\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/i;
+
+
+      const match =
+        String(
+          description
+        ).match(
+          regex
+        );
+
+
+      if (!match) {
+
+        return null;
+
+      }
+
+
+      const latitude =
+        parseFloat(
+          match[1]
+        );
+
+
+      const longitude =
+        parseFloat(
+          match[2]
+        );
+
+
+      if (
+        Number.isNaN(latitude) ||
+        Number.isNaN(longitude)
+      ) {
+
+        return null;
+
+      }
+
+
+      if (
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180
+      ) {
+
+        return null;
+
+      }
+
+
+      return {
+        latitude,
+        longitude
+      };
+
+    }
+
+
+    /* =====================================================
+       UPDATE MAP
+    ====================================================== */
+
+    function updateMap(
+      persons
+    ) {
+
+      initializeDashboardMap();
+
+
+      if (!dashboardMap) {
+
+        return;
+
+      }
+
+
+      /* Remove existing markers */
+
+      mapMarkers.forEach(
+        marker => {
+
+          dashboardMap.removeLayer(
+            marker
+          );
+
+        }
+      );
+
+
+      mapMarkers = [];
+
+
+      /* Find cases with coordinates */
+
+      const casesWithLocation =
+        persons
+          .map(
+            person => {
+
+              const coordinates =
+                extractCoordinates(
+                  person.description
+                );
+
+
+              return {
+                person,
+                coordinates
+              };
+
+            }
+          )
+          .filter(
+            item =>
+              item.coordinates !== null
+          );
+
+
+      /* Create markers */
+
+      casesWithLocation.forEach(
+        item => {
+
+          const person =
+            item.person;
+
+          const coordinates =
+            item.coordinates;
+
+
+          const caseId =
+            "MP-2026-" +
+            String(
+              person.id
+            ).padStart(
+              3,
+              "0"
+            );
+
+
+          /*
+           * IMPORTANT:
+           * Explicit Leaflet icon prevents
+           * the broken/yellow M marker.
+           */
+
+          const marker =
+            L.marker(
+              [
+                coordinates.latitude,
+                coordinates.longitude
+              ],
+              {
+                icon:
+                  defaultMarkerIcon
+              }
+            ).addTo(
+              dashboardMap
+            );
+
+
+          const statusText =
+            formatStatus(
+              person.status
+            );
+
+
+          marker.bindPopup(`
+
+            <div>
+
+              <div class="popup-title">
+                ${escapeHtml(
+                  person.name ||
+                  "Unknown"
+                )}
+              </div>
+
+              <div class="popup-case">
+                ${caseId}
+              </div>
+
+              <hr>
+
+              <b>Age:</b>
+              ${escapeHtml(
+                String(
+                  person.age ??
+                  "—"
+                )
+              )}
+
+              <br>
+
+              <b>Status:</b>
+              <span class="popup-status">
+                ${escapeHtml(
+                  statusText
+                )}
+              </span>
+
+              <br>
+
+              <b>Last Seen:</b>
+              ${escapeHtml(
+                person.last_seen_location ||
+                "Not provided"
+              )}
+
+              <br>
+
+              <b>Date:</b>
+              ${escapeHtml(
+                person.last_seen_date ||
+                "—"
+              )}
+
+              <br>
+
+              <b>Coordinates:</b>
+              ${coordinates.latitude.toFixed(6)},
+              ${coordinates.longitude.toFixed(6)}
+
+              <br><br>
+
+              <button
+                class="btn btn-primary btn-sm"
+                onclick="
+                  viewCase(${person.id})
+                "
+              >
+                View Case
+              </button>
+
+            </div>
+
+          `);
+
+
+          mapMarkers.push(
+            marker
+          );
+
+        }
+      );
+
+
+      /* Update map information */
+
+      const mapInfo =
+        document.getElementById(
+          "mapInfo"
+        );
+
+
+      if (mapInfo) {
+
+        mapInfo.textContent =
+          casesWithLocation.length +
+          " case(s) displayed on the map out of " +
+          persons.length +
+          " total case(s).";
+
+      }
+
+
+      /* Fit map around markers */
+
+      if (
+        casesWithLocation.length > 0
+      ) {
+
+        const bounds =
+          L.latLngBounds(
+            casesWithLocation.map(
+              item => [
+
+                item.coordinates.latitude,
+
+                item.coordinates.longitude
+
+              ]
+            )
+          );
+
+
+        dashboardMap.fitBounds(
+          bounds,
+          {
+            padding: [
+              40,
+              40
+            ]
+          }
+        );
+
+      } else {
+
+        dashboardMap.setView(
+          [
+            DEFAULT_LAT,
+            DEFAULT_LNG
+          ],
+          5
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TAB SWITCHING
+    ====================================================== */
+
+    function switchTab(
+      tab,
+      el
+    ) {
 
       document
-        .querySelectorAll(".tab-content")
-        .forEach(t => {
-          t.style.display = "none";
-        });
+        .querySelectorAll(
+          ".tab-content"
+        )
+        .forEach(
+          tabElement => {
+
+            tabElement.style.display =
+              "none";
+
+          }
+        );
+
 
       document
-        .querySelectorAll(".dash-tab")
-        .forEach(t => {
-          t.classList.remove("active");
-        });
+        .querySelectorAll(
+          ".dash-tab"
+        )
+        .forEach(
+          tabElement => {
+
+            tabElement.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
 
       const selectedTab =
-        document.getElementById("tab-" + tab);
+        document.getElementById(
+          "tab-" + tab
+        );
+
 
       if (selectedTab) {
-        selectedTab.style.display = "block";
+
+        selectedTab.style.display =
+          "block";
+
       }
 
+
       if (el) {
-        el.classList.add("active");
+
+        el.classList.add(
+          "active"
+        );
+
+      }
+
+
+      if (
+        tab === "map"
+      ) {
+
+        initializeDashboardMap();
+
+
+        setTimeout(
+          () => {
+
+            if (dashboardMap) {
+
+              dashboardMap.invalidateSize();
+
+            }
+
+
+            updateMap(
+              allPersons
+            );
+
+          },
+          150
+        );
+
       }
 
     }
 
 
-    /*
-     * ============================================================
-     * STATUS NORMALIZATION
-     * ============================================================
-     *
-     * Backend:
-     *   missing
-     *   found
-     *
-     * Frontend display:
-     *   Active
-     *   Resolved
-     */
+    /* =====================================================
+       FORMAT STATUS
+    ====================================================== */
 
-    function formatStatus(status) {
+    function formatStatus(
+      status
+    ) {
 
       const value =
-        String(status || "")
-          .toLowerCase();
+        String(
+          status || ""
+        ).toLowerCase();
+
 
       if (
         value === "found" ||
         value === "resolved"
       ) {
+
         return "Resolved";
+
       }
+
 
       if (
         value === "matched"
       ) {
+
         return "Matched";
+
       }
+
 
       return "Active";
 
     }
 
 
-    /*
-     * ============================================================
-     * FORMAT DATE
-     * ============================================================
-     */
+    /* =====================================================
+       FORMAT DATE
+    ====================================================== */
 
-    function formatDate(value) {
+    function formatDate(
+      value
+    ) {
 
       if (!value) {
+
         return "—";
+
       }
+
 
       try {
 
         const date =
-          new Date(value);
+          new Date(
+            value
+          );
 
-        if (isNaN(date.getTime())) {
+
+        if (
+          isNaN(
+            date.getTime()
+          )
+        ) {
+
           return value;
+
         }
+
 
         return date.toLocaleDateString(
           "en-IN",
@@ -649,11 +1613,9 @@
     }
 
 
-    /*
-     * ============================================================
-     * LOAD CASES FROM RENDER BACKEND
-     * ============================================================
-     */
+    /* =====================================================
+       LOAD CASES
+    ====================================================== */
 
     async function loadCases() {
 
@@ -661,6 +1623,7 @@
         document.getElementById(
           "casesTableBody"
         );
+
 
       try {
 
@@ -670,33 +1633,20 @@
         );
 
 
-        /*
-         * IMPORTANT:
-         *
-         * This is the correct endpoint.
-         *
-         * NOT:
-         * /api/cases
-         *
-         * Correct:
-         * /api/persons
-         */
-
         const response =
           await fetch(
-            API_BASE + "/api/persons",
+            API_BASE +
+            "/api/persons",
             {
               method: "GET",
+
               headers: {
-                "Accept": "application/json"
+                Accept:
+                  "application/json"
               }
             }
           );
 
-
-        /*
-         * Check HTTP response
-         */
 
         if (!response.ok) {
 
@@ -708,25 +1658,15 @@
         }
 
 
-        /*
-         * Convert response to JSON
-         */
-
         const persons =
           await response.json();
 
 
-        console.log(
-          "TraceAI backend cases:",
-          persons
-        );
-
-
-        /*
-         * Make sure response is an array
-         */
-
-        if (!Array.isArray(persons)) {
+        if (
+          !Array.isArray(
+            persons
+          )
+        ) {
 
           throw new Error(
             "Unexpected backend response."
@@ -735,92 +1675,133 @@
         }
 
 
-        /*
-         * ========================================================
-         * STATISTICS
-         * ========================================================
-         */
+        allPersons =
+          persons;
+
+
+        console.log(
+          "TraceAI backend cases:",
+          persons
+        );
+
+
+        /* Statistics */
 
         const total =
           persons.length;
 
+
         const active =
-          persons.filter(person => {
+          persons.filter(
+            person => {
 
-            const status =
-              String(
-                person.status || ""
-              ).toLowerCase();
+              const status =
+                String(
+                  person.status ||
+                  ""
+                ).toLowerCase();
 
-            return (
-              status === "missing" ||
-              status === "active"
-            );
 
-          }).length;
+              return (
+                status === "missing" ||
+                status === "active"
+              );
+
+            }
+          ).length;
 
 
         const resolved =
-          persons.filter(person => {
+          persons.filter(
+            person => {
 
-            const status =
-              String(
-                person.status || ""
-              ).toLowerCase();
+              const status =
+                String(
+                  person.status ||
+                  ""
+                ).toLowerCase();
 
-            return (
-              status === "found" ||
-              status === "resolved"
-            );
 
-          }).length;
+              return (
+                status === "found" ||
+                status === "resolved"
+              );
+
+            }
+          ).length;
 
 
         const matched =
-          persons.filter(person => {
+          persons.filter(
+            person => {
 
-            return String(
-              person.status || ""
-            ).toLowerCase() === "matched";
+              return (
+                String(
+                  person.status ||
+                  ""
+                ).toLowerCase() ===
+                "matched"
+              );
 
-          }).length;
+            }
+          ).length;
 
 
         document.getElementById(
           "totalCases"
-        ).textContent = total;
+        ).textContent =
+          total;
 
 
         document.getElementById(
           "activeCases"
-        ).textContent = active;
+        ).textContent =
+          active;
 
 
         document.getElementById(
           "matchedCases"
-        ).textContent = matched;
+        ).textContent =
+          matched;
 
 
         document.getElementById(
           "resolvedCases"
-        ).textContent = resolved;
+        ).textContent =
+          resolved;
 
 
-        /*
-         * ========================================================
-         * NO CASES
-         * ========================================================
-         */
+        /* Update map */
 
-        if (persons.length === 0) {
+        updateMap(
+          persons
+        );
+
+
+        /* No cases */
+
+        if (
+          persons.length === 0
+        ) {
 
           tbody.innerHTML = `
+
             <tr>
-              <td colspan="9"
-                style="text-align:center; padding:40px;">
+
+              <td
+                colspan="10"
+                style="
+                  text-align: center;
+                  padding: 40px;
+                "
+              >
+
                 No missing-person cases found.
+
               </td>
+
             </tr>
+
           `;
 
           return;
@@ -828,250 +1809,246 @@
         }
 
 
-        /*
-         * ========================================================
-         * SORT NEWEST FIRST
-         * ========================================================
-         */
+        /* Sort newest first */
 
-        persons.sort((a, b) => {
+        persons.sort(
+          (a, b) => {
 
-          const dateA =
-            new Date(
-              a.created_at || 0
-            ).getTime();
-
-          const dateB =
-            new Date(
-              b.created_at || 0
-            ).getTime();
-
-          return dateB - dateA;
-
-        });
+            const dateA =
+              new Date(
+                a.created_at ||
+                0
+              ).getTime();
 
 
-        /*
-         * ========================================================
-         * CREATE TABLE
-         * ========================================================
-         */
+            const dateB =
+              new Date(
+                b.created_at ||
+                0
+              ).getTime();
+
+
+            return dateB -
+              dateA;
+
+          }
+        );
+
+
+        /* Build table */
 
         tbody.innerHTML =
-          persons.map(person => {
+          persons
+            .map(
+              person => {
+
+                const id =
+                  person.id;
 
 
-            /*
-             * Backend database ID
-             */
-
-            const id =
-              person.id;
-
-
-            /*
-             * Create display Case ID
-             */
-
-            const caseId =
-              "MP-2026-" +
-              String(id)
-                .padStart(3, "0");
+                const caseId =
+                  "MP-2026-" +
+                  String(
+                    id
+                  ).padStart(
+                    3,
+                    "0"
+                  );
 
 
-            /*
-             * Status
-             */
-
-            const status =
-              formatStatus(
-                person.status
-              );
+                const status =
+                  formatStatus(
+                    person.status
+                  );
 
 
-            /*
-             * Badge class
-             */
-
-            let badgeClass =
-              "badge-active";
-
-            if (status === "Matched") {
-              badgeClass =
-                "badge-matched";
-            }
-
-            if (status === "Resolved") {
-              badgeClass =
-                "badge-resolved";
-            }
+                let badgeClass =
+                  "badge-active";
 
 
-            /*
-             * Date
-             */
+                if (
+                  status === "Matched"
+                ) {
 
-            const date =
-              formatDate(
-                person.last_seen_date ||
-                person.created_at
-              );
+                  badgeClass =
+                    "badge-matched";
 
-
-            /*
-             * Last seen
-             */
-
-            const lastSeen =
-              person.last_seen_location ||
-              "Not provided";
+                }
 
 
-            /*
-             * Age
-             */
+                if (
+                  status === "Resolved"
+                ) {
 
-            const age =
-              person.age ??
-              "—";
+                  badgeClass =
+                    "badge-resolved";
 
-
-            /*
-             * Name
-             */
-
-            const name =
-              person.name ||
-              "Unknown";
+                }
 
 
-            /*
-             * AI confidence
-             *
-             * The current /api/persons endpoint
-             * does not provide an AI confidence
-             * field, so we don't invent one.
-             */
-
-            const confidence =
-              "—";
+                const date =
+                  formatDate(
+                    person.last_seen_date ||
+                    person.created_at
+                  );
 
 
-            /*
-             * Matches
-             *
-             * Current persons endpoint does not
-             * provide number of matches.
-             */
-
-            const matches =
-              "—";
+                const lastSeen =
+                  person.last_seen_location ||
+                  "Not provided";
 
 
-            return `
-              <tr>
-
-                <td>
-                  ${
-                    person.image_path
-                      ? `
-                        <img
-                          src="${API_BASE}/${person.image_path}"
-                          alt="${escapeHtml(name)}"
-                          style="
-                            width:60px;
-                            height:60px;
-                            object-fit:cover;
-                            border-radius:8px;
-                            cursor:pointer;
-                            border:1px solid var(--border);
-                          "
-                          onclick="window.open('${API_BASE}/${person.image_path}', '_blank')"
-                        >
-                      `
-                      : "No photo"
-                  }
-                </td>
-
-                <td
-                  style="
-                    font-weight:600;
-                    font-size:0.8rem;
-                    color:var(--primary);
-                  "
-                >
-                  ${caseId}
-                </td>
+                const age =
+                  person.age ??
+                  "—";
 
 
-                <td>
-                  <strong>
-                    ${escapeHtml(name)}
-                  </strong>
-                </td>
+                const name =
+                  person.name ||
+                  "Unknown";
 
 
-                <td>
-                  ${escapeHtml(String(age))}
-                </td>
+                return `
+
+                  <tr>
+
+                    <td>
+
+                      ${
+                        person.image_path
+                          ? `
+
+                            <img
+                              src="${API_BASE}/${person.image_path}"
+                              alt="${escapeHtml(name)}"
+                              style="
+                                width: 60px;
+                                height: 60px;
+                                object-fit: cover;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                border: 1px solid var(--border);
+                              "
+                              onclick="
+                                window.open(
+                                  '${API_BASE}/${person.image_path}',
+                                  '_blank'
+                                )
+                              "
+                            >
+
+                          `
+                          : "No photo"
+                      }
+
+                    </td>
 
 
-                <td>
-                  ${escapeHtml(lastSeen)}
-                </td>
+                    <td
+                      style="
+                        font-weight: 600;
+                        font-size: 0.8rem;
+                        color: var(--primary);
+                      "
+                    >
+
+                      ${caseId}
+
+                    </td>
 
 
-                <td>
-                  ${escapeHtml(date)}
-                </td>
+                    <td>
+
+                      <strong>
+                        ${escapeHtml(name)}
+                      </strong>
+
+                    </td>
 
 
-                <td>
-                  <span
-                    class="badge ${badgeClass}"
-                  >
-                    ${status}
-                  </span>
-                </td>
+                    <td>
+
+                      ${escapeHtml(
+                        String(age)
+                      )}
+
+                    </td>
 
 
-                <td>
-                  ${confidence}
-                </td>
+                    <td>
+
+                      ${escapeHtml(
+                        lastSeen
+                      )}
+
+                    </td>
 
 
-                <td>
-                  ${matches}
-                </td>
+                    <td>
+
+                      ${escapeHtml(
+                        date
+                      )}
+
+                    </td>
 
 
-                <td>
+                    <td>
 
-                  <button
-                    class="btn btn-ghost btn-sm"
-                    onclick="viewCase(${id})"
-                  >
-                    View
-                  </button>
+                      <span
+                        class="badge ${badgeClass}"
+                      >
+                        ${status}
+                      </span>
 
-                  <button
-                    class="btn btn-ghost btn-sm"
-                    onclick="analyzeCase(${id})"
-                  >
-                    Analyze with AI
-                  </button>
+                    </td>
 
-                </td>
 
-              </tr>
+                    <td>
+                      —
+                    </td>
 
-            `;
 
-          }).join("");
+                    <td>
+                      —
+                    </td>
+
+
+                    <td>
+
+                      <button
+                        class="btn btn-ghost btn-sm"
+                        onclick="
+                          viewCase(${id})
+                        "
+                      >
+                        View
+                      </button>
+
+
+                      <button
+                        class="btn btn-ghost btn-sm"
+                        onclick="
+                          analyzeCase(${id})
+                        "
+                      >
+                        Analyze with AI
+                      </button>
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              }
+            )
+            .join("");
 
 
         showToast(
-          `${persons.length} case(s) loaded successfully.`,
+          persons.length +
+          " case(s) loaded successfully.",
           "success"
         );
 
@@ -1088,11 +2065,12 @@
 
           <tr>
 
-            <td colspan="10"
+            <td
+              colspan="10"
               style="
-                text-align:center;
-                padding:40px;
-                color:var(--danger);
+                text-align: center;
+                padding: 40px;
+                color: var(--danger);
               "
             >
 
@@ -1133,31 +2111,48 @@
     }
 
 
-    /*
-     * ============================================================
-     * ESCAPE HTML
-     * ============================================================
-     */
+    /* =====================================================
+       ESCAPE HTML
+    ====================================================== */
 
-    function escapeHtml(value) {
+    function escapeHtml(
+      value
+    ) {
 
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      return String(
+        value
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
     }
 
 
-    /*
-     * ============================================================
-     * VIEW CASE
-     * ============================================================
-     */
+    /* =====================================================
+       VIEW CASE
+    ====================================================== */
 
-    async function viewCase(id) {
+    async function viewCase(
+      id
+    ) {
 
       try {
 
@@ -1183,33 +2178,59 @@
 
 
         alert(
-          "Case ID: MP-2026-" +
-          String(person.id).padStart(3, "0") +
-          "\n\n" +
 
-          "Name: " +
-          (person.name || "—") +
+          "Case ID: MP-2026-" +
+          String(
+            person.id
+          ).padStart(
+            3,
+            "0"
+          ) +
+
+          "\n\nName: " +
+          (
+            person.name ||
+            "—"
+          ) +
 
           "\nAge: " +
-          (person.age ?? "—") +
+          (
+            person.age ??
+            "—"
+          ) +
 
           "\nGender: " +
-          (person.gender || "—") +
+          (
+            person.gender ||
+            "—"
+          ) +
 
           "\nLast Seen: " +
-          (person.last_seen_location || "—") +
+          (
+            person.last_seen_location ||
+            "—"
+          ) +
 
           "\nLast Seen Date: " +
-          (person.last_seen_date || "—") +
+          (
+            person.last_seen_date ||
+            "—"
+          ) +
 
           "\nStatus: " +
-          formatStatus(person.status)
+          formatStatus(
+            person.status
+          )
+
         );
 
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
+
 
         showToast(
           "Could not load case details.",
@@ -1221,41 +2242,36 @@
     }
 
 
-    /*
-     * ============================================================
-     * AI ANALYSIS
-     * ============================================================
-     *
-     * This button currently takes the user to the
-     * report/search functionality.
-     *
-     * Your actual /api/search endpoint requires
-     * an uploaded image, so it cannot be called
-     * without an image.
-     */
+    /* =====================================================
+       AI ANALYSIS
+    ====================================================== */
 
-    function analyzeCase(id) {
+    function analyzeCase(
+      id
+    ) {
 
       showToast(
         "AI analysis requires a sighting photo. Open the Report page to upload one.",
         "info"
       );
 
-      setTimeout(() => {
 
-        window.location.href =
-          "/report";
+      setTimeout(
+        () => {
 
-      }, 1200);
+          window.location.href =
+            "/report";
+
+        },
+        1200
+      );
 
     }
 
 
-    /*
-     * ============================================================
-     * LOGOUT
-     * ============================================================
-     */
+    /* =====================================================
+       LOGOUT
+    ====================================================== */
 
     function handleLogout() {
 
@@ -1263,34 +2279,39 @@
         "safetrace_user"
       );
 
+
       localStorage.removeItem(
         "safetrace_token"
       );
+
 
       showToast(
         "Logged out successfully",
         "success"
       );
 
-      setTimeout(() => {
 
-        window.location.href =
-          "/login";
+      setTimeout(
+        () => {
 
-      }, 1000);
+          window.location.href =
+            "/login";
+
+        },
+        1000
+      );
 
     }
 
 
-    /*
-     * ============================================================
-     * INITIAL LOAD
-     * ============================================================
-     */
+    /* =====================================================
+       INITIAL LOAD
+    ====================================================== */
 
     loadCases();
 
   </script>
 
 </body>
+
 </html>
