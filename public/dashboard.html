@@ -2244,26 +2244,134 @@
        AI ANALYSIS
     ====================================================== */
 
-    function analyzeCase(
-      id
-    ) {
+    async function analyzeCase(id) {
+      const input = document.createElement("input");
 
-      showToast(
-        "AI analysis requires a sighting photo. Open the Report page to upload one.",
-        "info"
-      );
+      input.type = "file";
+      input.accept = "image/jpeg,image/png,image/webp";
 
+      input.onchange = async function () {
+        const file = input.files[0];
 
-      setTimeout(
-        () => {
+        if (!file) {
+          return;
+        }
 
-          window.location.href =
-            "/report";
+        const person = allPersons.find(
+          p => Number(p.id) === Number(id)
+        );
 
-        },
-        1200
-      );
+        if (!person) {
+          showToast(
+            "Case could not be found.",
+            "error"
+          );
+          return;
+        }
 
+        const formData = new FormData();
+
+        formData.append(
+          "image",
+          file
+        );
+
+        formData.append(
+          "location",
+          person.last_seen_location || ""
+        );
+
+        formData.append(
+          "reported_by",
+          user?.name || ""
+        );
+
+        formData.append(
+          "notes",
+          `AI analysis for case MP-2026-${String(id).padStart(3, "0")}`
+        );
+
+        showToast(
+          "AI is analyzing the photo...",
+          "info"
+        );
+
+        try {
+          const response = await fetch(
+            API_BASE + "/api/search",
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              result.detail ||
+              "AI analysis failed."
+            );
+          }
+
+          if (
+            result.best_match &&
+            result.best_match.person
+          ) {
+            const match =
+              result.best_match;
+
+            const matchedPerson =
+              match.person;
+
+            alert(
+              "🤖 AI MATCH FOUND\n\n" +
+              "Case ID: MP-2026-" +
+              String(matchedPerson.id).padStart(3, "0") +
+              "\n\n" +
+              "Name: " +
+              (matchedPerson.name || "Unknown") +
+              "\n\n" +
+              "Similarity: " +
+              match.similarity_score +
+              "%\n\n" +
+              "Status: " +
+              formatStatus(matchedPerson.status)
+            );
+
+            showToast(
+              `AI match found: ${matchedPerson.name} (${match.similarity_score}%)`,
+              "success"
+            );
+
+          } else {
+            alert(
+              "🤖 NO CONFIDENT MATCH FOUND\n\n" +
+              (result.message ||
+                "No matching person was found.")
+            );
+
+            showToast(
+              "No confident match found.",
+              "info"
+            );
+          }
+
+        } catch (error) {
+          console.error(
+            "AI analysis error:",
+            error
+          );
+
+          showToast(
+            error.message ||
+            "AI analysis failed.",
+            "error"
+          );
+        }
+      };
+
+      input.click();
     }
 
 
