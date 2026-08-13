@@ -1916,30 +1916,28 @@
 
                       ${
                         person.image_path
-                          ? `
-
-                            <img
-                              src="${API_BASE}/${person.image_path}"
-                              alt="${escapeHtml(name)}"
-                              style="
-                                width: 60px;
-                                height: 60px;
-                                object-fit: cover;
-                                border-radius: 8px;
-                                cursor: pointer;
-                                border: 1px solid var(--border);
-                              "
-                              onclick="
-                                window.open(
-                                  '${API_BASE}/${person.image_path}',
-                                  '_blank'
-                                )
-                              "
-                            >
-
-                          `
-                          : "No photo"
-                      }
+                            ? `
+                                <img
+                                    src="${person.image_path}"
+                                    alt="${escapeHtml(name)}"
+                                    style="
+                                        width: 60px;
+                                        height: 60px;
+                                        object-fit: cover;
+                                        border-radius: 8px;
+                                        cursor: pointer;
+                                        border: 1px solid var(--border);
+                                    "
+                                    onclick="
+                                        window.open(
+                                            '${person.image_path}',
+                                            '_blank'
+                                        )
+                                    "
+                                >
+                            `
+                            : "No photo"
+                    }
 
                     </td>
 
