@@ -110,154 +110,561 @@
       }
     }
 
-    /* Video surveillance modal */
-    .video-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(15,23,42,.72);
-      backdrop-filter: blur(4px);
-    }
+/* =====================================================
+   VIDEO SURVEILLANCE MODAL
+   DARK THEME - SAFE TRACE STYLE
+===================================================== */
 
-    .video-modal.show {
-      display: flex;
-    }
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
 
-    .video-modal-card {
-      width: min(720px,100%);
-      max-height: 90vh;
-      overflow-y: auto;
-      background: var(--surface,#fff);
-      color: var(--text,#0f172a);
-      border-radius: 16px;
-      box-shadow: 0 24px 80px rgba(0,0,0,.25);
-      padding: 26px;
-    }
+  display: none;
+  align-items: center;
+  justify-content: center;
 
-    .video-modal-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
+  padding: 20px;
 
-    .video-modal-header h2 {
-      margin: 0 0 6px;
-    }
+  background: rgba(2, 8, 23, 0.82);
 
-    .video-modal-header p {
-      margin: 0;
-      color: var(--text-light,#64748b);
-      font-size: .9rem;
-    }
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
 
-    .video-modal-close {
-      border: 0;
-      background: transparent;
-      font-size: 1.7rem;
-      cursor: pointer;
-      color: var(--text-light,#64748b);
-    }
+.video-modal.show {
+  display: flex;
+}
 
-    .video-form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
 
-    .video-form-full {
-      grid-column: 1/-1;
-    }
+/* =====================================================
+   MODAL CARD
+===================================================== */
 
-    .video-form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      font-size: .85rem;
-    }
+.video-modal-card {
+  width: min(720px, 100%);
+  max-height: 90vh;
 
-    .video-form-group input,
-    .video-form-group textarea {
-      width: 100%;
-      box-sizing: border-box;
-    }
+  overflow-y: auto;
 
-    .video-search-hint {
-      margin-top: 8px;
-      font-size: .78rem;
-      color: var(--text-light,#64748b);
-    }
+  background: #0f172a;
+  color: #f8fafc;
 
-    .video-result {
-      display: none;
-      margin-top: 22px;
-      padding: 18px;
-      border-radius: 12px;
-      border: 1px solid var(--border,#e2e8f0);
-      background: rgba(21,96,130,.04);
-    }
+  border: 1px solid rgba(148, 163, 184, 0.20);
 
-    .video-result.show {
-      display: block;
-    }
+  border-radius: 18px;
 
-    .video-result.success {
-      border-left: 4px solid var(--success,#27ae60);
-    }
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(21, 96, 130, 0.08);
 
-    .video-result.warning {
-      border-left: 4px solid var(--warning,#f39c12);
-    }
+  padding: 28px;
+}
 
-    .video-result.error {
-      border-left: 4px solid var(--danger,#e74c3c);
-    }
 
-    .video-result-grid {
-      display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 10px;
-      margin-top: 14px;
-    }
+/* =====================================================
+   HEADER
+===================================================== */
 
-    .video-result-item {
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: rgba(0,0,0,.035);
-    }
+.video-modal-header {
+  display: flex;
 
-    .video-result-label {
-      display: block;
-      font-size: .72rem;
-      color: var(--text-light,#64748b);
-      margin-bottom: 3px;
-    }
+  align-items: flex-start;
+  justify-content: space-between;
 
-    .video-result-value {
-      font-weight: 700;
-    }
+  gap: 20px;
 
-    .video-evidence {
-      width: 100%;
-      max-height: 360px;
-      object-fit: contain;
-      border-radius: 10px;
-      margin-top: 16px;
-      border: 1px solid var(--border,#e2e8f0);
-      background: #0f172a;
-    }
+  margin-bottom: 24px;
 
-    .video-modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 20px;
-    }
+  padding-bottom: 18px;
 
+  border-bottom: 1px solid
+    rgba(148, 163, 184, 0.16);
+}
+
+
+.video-modal-header h2 {
+  margin: 0 0 7px;
+
+  color: #f8fafc;
+
+  font-size: 1.45rem;
+
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
+}
+
+
+.video-modal-header p {
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 0.88rem;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   CLOSE BUTTON
+===================================================== */
+
+.video-modal-close {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.18);
+
+  border-radius: 8px;
+
+  background: rgba(148, 163, 184, 0.08);
+
+  color: #94a3b8;
+
+  font-size: 1.5rem;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.video-modal-close:hover {
+  background: rgba(239, 68, 68, 0.12);
+
+  border-color:
+    rgba(239, 68, 68, 0.35);
+
+  color: #f87171;
+}
+
+
+/* =====================================================
+   FORM GRID
+===================================================== */
+
+.video-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 18px;
+}
+
+
+.video-form-full {
+  grid-column: 1 / -1;
+}
+
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.video-form-group {
+  min-width: 0;
+}
+
+
+.video-form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #cbd5e1;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.01em;
+}
+
+
+/* =====================================================
+   ALL INPUTS
+===================================================== */
+
+.video-form-group input,
+.video-form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.22);
+
+  border-radius: 9px;
+
+  background: #111c32;
+
+  color: #f8fafc;
+
+  font-family: inherit;
+
+  font-size: 0.88rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+/* Text / number inputs */
+
+.video-form-group input[type="text"],
+.video-form-group input[type="number"] {
+  height: 46px;
+
+  padding: 0 13px;
+}
+
+
+/* Textarea */
+
+.video-form-group textarea {
+  min-height: 100px;
+
+  padding: 12px 13px;
+
+  resize: vertical;
+}
+
+
+/* =====================================================
+   FILE INPUT
+===================================================== */
+
+.video-form-group input[type="file"] {
+  min-height: 48px;
+
+  padding: 8px 10px;
+
+  cursor: pointer;
+}
+
+
+.video-form-group input[type="file"]::file-selector-button {
+  margin-right: 10px;
+
+  padding: 8px 13px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #156082;
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease;
+}
+
+
+.video-form-group input[type="file"]::file-selector-button:hover {
+  background: #1b759d;
+}
+
+
+/* =====================================================
+   PLACEHOLDERS
+===================================================== */
+
+.video-form-group input::placeholder,
+.video-form-group textarea::placeholder {
+  color: #64748b;
+
+  opacity: 1;
+}
+
+
+/* =====================================================
+   FOCUS
+===================================================== */
+
+.video-form-group input:focus,
+.video-form-group textarea:focus {
+  border-color: #156082;
+
+  background: #13213a;
+
+  box-shadow:
+    0 0 0 3px rgba(21, 96, 130, 0.18);
+}
+
+
+/* =====================================================
+   HINT
+===================================================== */
+
+.video-search-hint {
+  margin-top: 8px;
+
+  color: #64748b;
+
+  font-size: 0.76rem;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   RESULT BOX
+===================================================== */
+
+.video-result {
+  display: none;
+
+  margin-top: 22px;
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.18);
+
+  background: #111c32;
+
+  color: #e2e8f0;
+}
+
+
+.video-result.show {
+  display: block;
+}
+
+
+.video-result.success {
+  border-left: 4px solid #22c55e;
+
+  background:
+    rgba(34, 197, 94, 0.06);
+}
+
+
+.video-result.warning {
+  border-left: 4px solid #f59e0b;
+
+  background:
+    rgba(245, 158, 11, 0.06);
+}
+
+
+.video-result.error {
+  border-left: 4px solid #ef4444;
+
+  background:
+    rgba(239, 68, 68, 0.06);
+}
+
+
+/* =====================================================
+   RESULT GRID
+===================================================== */
+
+.video-result-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: 15px;
+}
+
+
+.video-result-item {
+  padding: 11px 13px;
+
+  border-radius: 8px;
+
+  background: rgba(148, 163, 184, 0.06);
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.10);
+}
+
+
+.video-result-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #64748b;
+
+  font-size: 0.7rem;
+}
+
+
+.video-result-value {
+  color: #f1f5f9;
+
+  font-size: 0.88rem;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   EVIDENCE IMAGE
+===================================================== */
+
+.video-evidence {
+  width: 100%;
+
+  max-height: 360px;
+
+  object-fit: contain;
+
+  margin-top: 16px;
+
+  border-radius: 10px;
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.18);
+
+  background: #020617;
+}
+
+
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
+
+.video-modal-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 24px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid
+    rgba(148, 163, 184, 0.12);
+}
+
+
+/* Search button */
+
+.video-modal-actions .btn-primary {
+  min-width: 145px;
+
+  background: #156082;
+
+  border-color: #156082;
+
+  color: white;
+}
+
+
+.video-modal-actions .btn-primary:hover {
+  background: #1b759d;
+
+  border-color: #1b759d;
+}
+
+
+/* Cancel button */
+
+.video-modal-actions .btn-secondary {
+  background: #111c32;
+
+  border: 1px solid
+    rgba(148, 163, 184, 0.25);
+
+  color: #cbd5e1;
+}
+
+
+.video-modal-actions .btn-secondary:hover {
+  background: #1e293b;
+
+  color: #f8fafc;
+}
+
+
+/* Disabled */
+
+.video-modal-actions button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+
+  .video-modal {
+    padding: 12px;
+  }
+
+  .video-modal-card {
+    padding: 20px;
+
+    border-radius: 14px;
+  }
+
+  .video-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .video-form-full {
+    grid-column: auto;
+  }
+
+  .video-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .video-modal-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .video-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .video-modal-actions button {
+    width: 100%;
+  }
+
+}
     @media(max-width:650px) {
       .video-form-grid,
       .video-result-grid {
