@@ -111,12 +111,167 @@
     }
 
     /* Video surveillance modal */
-    .video-modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,23,42,.72);backdrop-filter:blur(4px)}
-    .video-modal.show{display:flex}.video-modal-card{width:min(720px,100%);max-height:90vh;overflow-y:auto;background:var(--surface,#fff);color:var(--text,#0f172a);border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.25);padding:26px}
-    .video-modal-header{display:flex;justify-content:space-between;gap:16px;margin-bottom:20px}.video-modal-header h2{margin:0 0 6px}.video-modal-header p{margin:0;color:var(--text-light,#64748b);font-size:.9rem}.video-modal-close{border:0;background:transparent;font-size:1.7rem;cursor:pointer;color:var(--text-light,#64748b)}
-    .video-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.video-form-full{grid-column:1/-1}.video-form-group label{display:block;margin-bottom:6px;font-weight:600;font-size:.85rem}.video-form-group input,.video-form-group textarea{width:100%;box-sizing:border-box}.video-search-hint{margin-top:8px;font-size:.78rem;color:var(--text-light,#64748b)}
-    .video-result{display:none;margin-top:22px;padding:18px;border-radius:12px;border:1px solid var(--border,#e2e8f0);background:rgba(21,96,130,.04)}.video-result.show{display:block}.video-result.success{border-left:4px solid var(--success,#27ae60)}.video-result.warning{border-left:4px solid var(--warning,#f39c12)}.video-result.error{border-left:4px solid var(--danger,#e74c3c)}
-    .video-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.video-result-item{padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.035)}.video-result-label{display:block;font-size:.72rem;color:var(--text-light,#64748b);margin-bottom:3px}.video-result-value{font-weight:700}.video-evidence{width:100%;max-height:360px;object-fit:contain;border-radius:10px;margin-top:16px;border:1px solid var(--border,#e2e8f0);background:#0f172a}.video-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}@media(max-width:650px){.video-form-grid,.video-result-grid{grid-template-columns:1fr}.video-form-full{grid-column:auto}.video-modal-card{padding:20px}}
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(15,23,42,.72);
+      backdrop-filter: blur(4px);
+    }
+
+    .video-modal.show {
+      display: flex;
+    }
+
+    .video-modal-card {
+      width: min(720px,100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--surface,#fff);
+      color: var(--text,#0f172a);
+      border-radius: 16px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.25);
+      padding: 26px;
+    }
+
+    .video-modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .video-modal-header h2 {
+      margin: 0 0 6px;
+    }
+
+    .video-modal-header p {
+      margin: 0;
+      color: var(--text-light,#64748b);
+      font-size: .9rem;
+    }
+
+    .video-modal-close {
+      border: 0;
+      background: transparent;
+      font-size: 1.7rem;
+      cursor: pointer;
+      color: var(--text-light,#64748b);
+    }
+
+    .video-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .video-form-full {
+      grid-column: 1/-1;
+    }
+
+    .video-form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: .85rem;
+    }
+
+    .video-form-group input,
+    .video-form-group textarea {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .video-search-hint {
+      margin-top: 8px;
+      font-size: .78rem;
+      color: var(--text-light,#64748b);
+    }
+
+    .video-result {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border,#e2e8f0);
+      background: rgba(21,96,130,.04);
+    }
+
+    .video-result.show {
+      display: block;
+    }
+
+    .video-result.success {
+      border-left: 4px solid var(--success,#27ae60);
+    }
+
+    .video-result.warning {
+      border-left: 4px solid var(--warning,#f39c12);
+    }
+
+    .video-result.error {
+      border-left: 4px solid var(--danger,#e74c3c);
+    }
+
+    .video-result-grid {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .video-result-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.035);
+    }
+
+    .video-result-label {
+      display: block;
+      font-size: .72rem;
+      color: var(--text-light,#64748b);
+      margin-bottom: 3px;
+    }
+
+    .video-result-value {
+      font-weight: 700;
+    }
+
+    .video-evidence {
+      width: 100%;
+      max-height: 360px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-top: 16px;
+      border: 1px solid var(--border,#e2e8f0);
+      background: #0f172a;
+    }
+
+    .video-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    @media(max-width:650px) {
+      .video-form-grid,
+      .video-result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .video-form-full {
+        grid-column: auto;
+      }
+
+      .video-modal-card {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 
@@ -211,7 +366,6 @@
 
       <div class="nav-actions">
 
-        <!-- Theme -->
         <button
           class="theme-toggle"
           aria-label="Toggle dark mode"
@@ -260,7 +414,6 @@
         </button>
 
 
-        <!-- Notifications -->
         <button
           class="btn btn-ghost btn-sm notif-btn"
           aria-label="Notifications"
@@ -292,7 +445,6 @@
         </button>
 
 
-        <!-- Logout -->
         <button
           class="btn btn-ghost btn-sm"
           id="logoutBtn"
@@ -302,7 +454,6 @@
         </button>
 
 
-        <!-- Mobile menu -->
         <button
           class="mobile-toggle"
           id="mobileToggle"
@@ -329,7 +480,6 @@
 
   <main>
 
-    <!-- Page header -->
     <div class="page-header">
 
       <div class="container">
@@ -458,20 +608,12 @@
     </div>
 
 
-    <!-- =====================================================
-         DASHBOARD CONTENT
-    ====================================================== -->
-
     <section
       class="section"
       style="padding-top: 32px;"
     >
 
       <div class="container">
-
-        <!-- =================================================
-             STAT CARDS
-        ================================================== -->
 
         <div class="dash-cards">
 
@@ -560,10 +702,6 @@
         </div>
 
 
-        <!-- =================================================
-             TABS
-        ================================================== -->
-
         <div
           class="dash-tabs"
           role="tablist"
@@ -597,8 +735,7 @@
           >
             Map View
           </button>
-
-        </div>
+                  </div>
 
 
         <!-- =================================================
@@ -865,24 +1002,191 @@
   </main>
 
 
+  <!-- =====================================================
+       VIDEO SURVEILLANCE MODAL
+  ====================================================== -->
 
-  <div class="video-modal" id="videoSearchModal" role="dialog" aria-modal="true" aria-labelledby="videoSearchTitle">
+  <div
+    class="video-modal"
+    id="videoSearchModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="videoSearchTitle"
+  >
+
     <div class="video-modal-card">
-      <div class="video-modal-header"><div><h2 id="videoSearchTitle">Search Surveillance Video</h2><p id="videoSearchSubtitle">Search a surveillance video for this missing person's face.</p></div><button type="button" class="video-modal-close" onclick="closeVideoSearch()" aria-label="Close">&times;</button></div>
-      <form id="videoSearchForm" onsubmit="submitVideoSearch(event)">
-        <div class="video-form-grid">
-          <div class="video-form-group video-form-full"><label for="videoFile">Surveillance Video <span style="color:var(--danger);">*</span></label><input id="videoFile" class="form-input" type="file" accept="video/mp4,video/webm,video/avi,video/mov,video/mkv" required><div class="video-search-hint">TraceAI samples frames, detects all faces and compares them with the selected person's SFace embedding.</div></div>
-          <div class="video-form-group"><label for="videoCameraId">Camera ID</label><input id="videoCameraId" class="form-input" type="text" placeholder="e.g. CAM01"></div>
-          <div class="video-form-group"><label for="videoLocation">Camera Location</label><input id="videoLocation" class="form-input" type="text" placeholder="e.g. GHS Main Gate"></div>
-          <div class="video-form-group"><label for="videoLatitude">Latitude</label><input id="videoLatitude" class="form-input" type="number" step="any" placeholder="e.g. 26.9196"></div>
-          <div class="video-form-group"><label for="videoLongitude">Longitude</label><input id="videoLongitude" class="form-input" type="number" step="any" placeholder="e.g. 75.7878"></div>
-          <div class="video-form-group video-form-full"><label for="videoNotes">Notes</label><textarea id="videoNotes" class="form-input" rows="3" placeholder="Optional notes about the surveillance footage"></textarea></div>
+
+      <div class="video-modal-header">
+
+        <div>
+
+          <h2 id="videoSearchTitle">
+            Search Surveillance Video
+          </h2>
+
+          <p id="videoSearchSubtitle">
+            Search a surveillance video for this missing person's face.
+          </p>
+
         </div>
-        <div id="videoSearchResult" class="video-result"></div>
-        <div class="video-modal-actions"><button type="button" class="btn btn-secondary" onclick="closeVideoSearch()">Cancel</button><button type="submit" class="btn btn-primary" id="videoSearchButton">Search Video</button></div>
+
+        <button
+          type="button"
+          class="video-modal-close"
+          onclick="closeVideoSearch()"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+      </div>
+
+
+      <form
+        id="videoSearchForm"
+        onsubmit="submitVideoSearch(event)"
+      >
+
+        <div class="video-form-grid">
+
+          <div class="video-form-group video-form-full">
+
+            <label for="videoFile">
+              Surveillance Video
+              <span style="color:var(--danger);">*</span>
+            </label>
+
+            <input
+              id="videoFile"
+              class="form-input"
+              type="file"
+              accept="video/mp4,video/webm,video/avi,video/mov,video/mkv"
+              required
+            >
+
+            <div class="video-search-hint">
+              TraceAI samples frames, detects all faces and compares them with the selected person's SFace embedding.
+            </div>
+
+          </div>
+
+
+          <div class="video-form-group">
+
+            <label for="videoCameraId">
+              Camera ID
+            </label>
+
+            <input
+              id="videoCameraId"
+              class="form-input"
+              type="text"
+              placeholder="e.g. CAM01"
+            >
+
+          </div>
+
+
+          <div class="video-form-group">
+
+            <label for="videoLocation">
+              Camera Location
+            </label>
+
+            <input
+              id="videoLocation"
+              class="form-input"
+              type="text"
+              placeholder="e.g. GHS Main Gate"
+            >
+
+          </div>
+
+
+          <div class="video-form-group">
+
+            <label for="videoLatitude">
+              Latitude
+            </label>
+
+            <input
+              id="videoLatitude"
+              class="form-input"
+              type="number"
+              step="any"
+              placeholder="e.g. 26.9196"
+            >
+
+          </div>
+
+
+          <div class="video-form-group">
+
+            <label for="videoLongitude">
+              Longitude
+            </label>
+
+            <input
+              id="videoLongitude"
+              class="form-input"
+              type="number"
+              step="any"
+              placeholder="e.g. 75.7878"
+            >
+
+          </div>
+
+
+          <div class="video-form-group video-form-full">
+
+            <label for="videoNotes">
+              Notes
+            </label>
+
+            <textarea
+              id="videoNotes"
+              class="form-input"
+              rows="3"
+              placeholder="Optional notes about the surveillance footage"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="videoSearchResult"
+          class="video-result"
+        ></div>
+
+
+        <div class="video-modal-actions">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="closeVideoSearch()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="videoSearchButton"
+          >
+            Search Video
+          </button>
+
+        </div>
+
       </form>
+
     </div>
+
   </div>
+
 
   <!-- =====================================================
        FOOTER
@@ -1035,7 +1339,6 @@
 
     /* =====================================================
        LEAFLET MARKER ICON
-       FIXES THE YELLOW "M" / BROKEN MARKER ISSUE
     ====================================================== */
 
     const defaultMarkerIcon =
@@ -1224,8 +1527,6 @@
       }
 
 
-      /* Remove existing markers */
-
       mapMarkers.forEach(
         marker => {
 
@@ -1239,8 +1540,6 @@
 
       mapMarkers = [];
 
-
-      /* Find cases with coordinates */
 
       const casesWithLocation =
         persons
@@ -1266,8 +1565,6 @@
           );
 
 
-      /* Create markers */
-
       casesWithLocation.forEach(
         item => {
 
@@ -1287,12 +1584,6 @@
               "0"
             );
 
-
-          /*
-           * IMPORTANT:
-           * Explicit Leaflet icon prevents
-           * the broken/yellow M marker.
-           */
 
           const marker =
             L.marker(
@@ -1395,8 +1686,6 @@
       );
 
 
-      /* Update map information */
-
       const mapInfo =
         document.getElementById(
           "mapInfo"
@@ -1413,8 +1702,6 @@
 
       }
 
-
-      /* Fit map around markers */
 
       if (
         casesWithLocation.length > 0
@@ -1637,10 +1924,7 @@
 
       }
 
-    }
-
-
-    /* =====================================================
+    }    /* =====================================================
        LOAD CASES
     ====================================================== */
 
@@ -1711,8 +1995,6 @@
           persons
         );
 
-
-        /* Statistics */
 
         const total =
           persons.length;
@@ -1798,14 +2080,10 @@
           resolved;
 
 
-        /* Update map */
-
         updateMap(
           persons
         );
 
-
-        /* No cases */
 
         if (
           persons.length === 0
@@ -1836,8 +2114,6 @@
         }
 
 
-        /* Sort newest first */
-
         persons.sort(
           (a, b) => {
 
@@ -1861,8 +2137,6 @@
           }
         );
 
-
-        /* Build table */
 
         tbody.innerHTML =
           persons
@@ -2043,6 +2317,7 @@
 
                       <button
                         class="btn btn-ghost btn-sm"
+                        type="button"
                         onclick="
                           viewCase(${id})
                         "
@@ -2053,8 +2328,9 @@
 
                       <button
                         class="btn btn-ghost btn-sm"
+                        type="button"
                         onclick="
-                          analyzeCase(${id})
+                          openVideoSearch(${id})
                         "
                       >
                         Search Surveillance Video
@@ -2270,65 +2546,798 @@
     /* =====================================================
        VIDEO SURVEILLANCE SEARCH
     ====================================================== */
+
     let selectedVideoPersonId = null;
 
+
     function openVideoSearch(id) {
-      const person = allPersons.find(p => Number(p.id) === Number(id));
-      if (!person) { showToast("Case could not be found.", "error"); return; }
-      selectedVideoPersonId = Number(id);
-      const modal = document.getElementById("videoSearchModal");
-      document.getElementById("videoSearchSubtitle").textContent = `Searching video for ${person.name || "this missing person"} (Case MP-2026-${String(id).padStart(3,"0")}).`;
-      document.getElementById("videoFile").value = "";
-      document.getElementById("videoCameraId").value = "";
-      document.getElementById("videoLocation").value = person.last_seen_location || "";
-      document.getElementById("videoLatitude").value = "";
-      document.getElementById("videoLongitude").value = "";
-      document.getElementById("videoNotes").value = `Surveillance search for case MP-2026-${String(id).padStart(3,"0")}`;
-      const result = document.getElementById("videoSearchResult"); result.className="video-result"; result.innerHTML="";
-      const button = document.getElementById("videoSearchButton"); button.disabled=false; button.textContent="Search Video";
-      modal.classList.add("show"); setTimeout(()=>document.getElementById("videoFile").focus(),50);
+
+      const person =
+        allPersons.find(
+          p =>
+            Number(p.id) ===
+            Number(id)
+        );
+
+
+      if (!person) {
+
+        showToast(
+          "Case could not be found.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      selectedVideoPersonId =
+        Number(id);
+
+
+      const modal =
+        document.getElementById(
+          "videoSearchModal"
+        );
+
+
+      if (!modal) {
+
+        console.error(
+          "videoSearchModal not found."
+        );
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "videoSearchSubtitle"
+      ).textContent =
+        `Searching video for ${
+          person.name ||
+          "this missing person"
+        } (Case MP-2026-${String(id).padStart(3,"0")}).`;
+
+
+      document.getElementById(
+        "videoFile"
+      ).value = "";
+
+
+      document.getElementById(
+        "videoCameraId"
+      ).value = "";
+
+
+      document.getElementById(
+        "videoLocation"
+      ).value =
+        person.last_seen_location ||
+        "";
+
+
+      document.getElementById(
+        "videoLatitude"
+      ).value = "";
+
+
+      document.getElementById(
+        "videoLongitude"
+      ).value = "";
+
+
+      document.getElementById(
+        "videoNotes"
+      ).value =
+        `Surveillance search for case MP-2026-${String(id).padStart(3,"0")}`;
+
+
+      const result =
+        document.getElementById(
+          "videoSearchResult"
+        );
+
+
+      if (result) {
+
+        result.className =
+          "video-result";
+
+        result.innerHTML =
+          "";
+
+      }
+
+
+      const button =
+        document.getElementById(
+          "videoSearchButton"
+        );
+
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Search Video";
+
+      }
+
+
+      modal.classList.add(
+        "show"
+      );
+
+
+      setTimeout(
+        () => {
+
+          const fileInput =
+            document.getElementById(
+              "videoFile"
+            );
+
+          if (fileInput) {
+
+            fileInput.focus();
+
+          }
+
+        },
+        50
+      );
+
     }
 
-    function closeVideoSearch() { const modal=document.getElementById("videoSearchModal"); if(modal) modal.classList.remove("show"); selectedVideoPersonId=null; }
 
-    function formatSeconds(seconds) { const v=Number(seconds); if(!Number.isFinite(v)) return "—"; const m=Math.floor(v/60), s=v%60; return `${String(m).padStart(2,"0")}:${s.toFixed(2).padStart(5,"0")}`; }
+    function closeVideoSearch() {
 
-    function showVideoSearchResult(result,type="success") {
-      const container=document.getElementById("videoSearchResult"); if(!container) return;
-      const evidence=result.evidence_image_path ? `<img class="video-evidence" src="${escapeHtml(result.evidence_image_path)}" alt="Best surveillance evidence frame">` : "";
-      const score=Number.isFinite(Number(result.best_similarity)) ? `${Number(result.best_similarity).toFixed(2)}%` : "—";
-      const sightings=Array.isArray(result.sightings)?result.sightings:[];
-      const sightingHtml=sightings.length ? `<div style="margin-top:16px;"><strong>Potential sightings</strong>${sightings.map(s=>`<div style="padding:10px 12px;margin-top:8px;border-radius:8px;background:rgba(0,0,0,.035)"><strong>Sighting #${escapeHtml(String(s.id ?? "—"))}</strong><br>${formatSeconds(s.sighting_start_seconds)} - ${formatSeconds(s.sighting_end_seconds)} &nbsp;•&nbsp; ${Number(s.similarity_score||0).toFixed(2)}%</div>`).join("")}</div>` : "";
-      container.className=`video-result show ${type}`;
-      container.innerHTML=`<strong>${escapeHtml(result.message||"Video search completed.")}</strong><div class="video-result-grid"><div class="video-result-item"><span class="video-result-label">Best similarity</span><span class="video-result-value">${score}</span></div><div class="video-result-item"><span class="video-result-label">Best timestamp</span><span class="video-result-value">${formatSeconds(result.best_timestamp_seconds)}</span></div><div class="video-result-item"><span class="video-result-label">Camera</span><span class="video-result-value">${escapeHtml(result.camera_id||"Not provided")}</span></div><div class="video-result-item"><span class="video-result-label">Location</span><span class="video-result-value">${escapeHtml(result.location||"Not provided")}</span></div><div class="video-result-item"><span class="video-result-label">Frames processed</span><span class="video-result-value">${escapeHtml(String(result.frames_processed??"—"))}</span></div><div class="video-result-item"><span class="video-result-label">Faces detected</span><span class="video-result-value">${escapeHtml(String(result.faces_detected??"—"))}</span></div><div class="video-result-item"><span class="video-result-label">Matches found</span><span class="video-result-value">${escapeHtml(String(result.matches_found??"—"))}</span></div><div class="video-result-item"><span class="video-result-label">Video</span><span class="video-result-value">${escapeHtml(result.video_name||"—")}</span></div></div>${evidence}${sightingHtml}`;
+      const modal =
+        document.getElementById(
+          "videoSearchModal"
+        );
+
+
+      if (modal) {
+
+        modal.classList.remove(
+          "show"
+        );
+
+      }
+
+
+      selectedVideoPersonId =
+        null;
+
     }
 
-    async function submitVideoSearch(event) {
+
+    function formatSeconds(
+      seconds
+    ) {
+
+      const value =
+        Number(seconds);
+
+
+      if (
+        !Number.isFinite(
+          value
+        )
+      ) {
+
+        return "—";
+
+      }
+
+
+      const minutes =
+        Math.floor(
+          value / 60
+        );
+
+
+      const secs =
+        value % 60;
+
+
+      return (
+        String(
+          minutes
+        ).padStart(
+          2,
+          "0"
+        ) +
+        ":" +
+        secs.toFixed(
+          2
+        ).padStart(
+          5,
+          "0"
+        )
+      );
+
+    }
+
+
+    function showVideoSearchResult(
+      result,
+      type = "success"
+    ) {
+
+      const container =
+        document.getElementById(
+          "videoSearchResult"
+        );
+
+
+      if (!container) {
+
+        return;
+
+      }
+
+
+      const evidence =
+        result.evidence_image_path
+          ? `
+              <img
+                class="video-evidence"
+                src="${escapeHtml(
+                  result.evidence_image_path
+                )}"
+                alt="Best surveillance evidence frame"
+              >
+            `
+          : "";
+
+
+      const score =
+        Number.isFinite(
+          Number(
+            result.best_similarity
+          )
+        )
+          ? `${Number(
+              result.best_similarity
+            ).toFixed(2)}%`
+          : "—";
+
+
+      const sightings =
+        Array.isArray(
+          result.sightings
+        )
+          ? result.sightings
+          : [];
+
+
+      const sightingHtml =
+        sightings.length
+          ? `
+              <div style="margin-top:16px;">
+
+                <strong>
+                  Potential sightings
+                </strong>
+
+                ${sightings
+                  .map(
+                    sighting => `
+                      <div
+                        style="
+                          padding:10px 12px;
+                          margin-top:8px;
+                          border-radius:8px;
+                          background:rgba(0,0,0,.035);
+                        "
+                      >
+
+                        <strong>
+                          Sighting #${escapeHtml(
+                            String(
+                              sighting.id ??
+                              "—"
+                            )
+                          )}
+                        </strong>
+
+                        <br>
+
+                        ${formatSeconds(
+                          sighting.sighting_start_seconds
+                        )}
+
+                        -
+
+                        ${formatSeconds(
+                          sighting.sighting_end_seconds
+                        )}
+
+                        &nbsp;•&nbsp;
+
+                        ${Number(
+                          sighting.similarity_score ||
+                          0
+                        ).toFixed(2)}%
+
+                      </div>
+                    `
+                  )
+                  .join("")}
+
+              </div>
+            `
+          : "";
+
+
+      container.className =
+        `video-result show ${type}`;
+
+
+      container.innerHTML = `
+
+        <strong>
+          ${escapeHtml(
+            result.message ||
+            "Video search completed."
+          )}
+        </strong>
+
+
+        <div class="video-result-grid">
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Best similarity
+            </span>
+
+            <span class="video-result-value">
+              ${score}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Best timestamp
+            </span>
+
+            <span class="video-result-value">
+              ${formatSeconds(
+                result.best_timestamp_seconds
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Camera
+            </span>
+
+            <span class="video-result-value">
+              ${escapeHtml(
+                result.camera_id ||
+                "Not provided"
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Location
+            </span>
+
+            <span class="video-result-value">
+              ${escapeHtml(
+                result.location ||
+                "Not provided"
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Frames processed
+            </span>
+
+            <span class="video-result-value">
+              ${escapeHtml(
+                String(
+                  result.frames_processed ??
+                  "—"
+                )
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Faces detected
+            </span>
+
+            <span class="video-result-value">
+              ${escapeHtml(
+                String(
+                  result.faces_detected ??
+                  "—"
+                )
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Matches found
+            </span>
+
+            <span class="video-result-value">
+              ${escapeHtml(
+                String(
+                  result.matches_found ??
+                  "—"
+                )
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="video-result-item">
+
+            <span class="video-result-label">
+              Video
+            </span>
+
+            <span class="video-result-value">
+              ${escapeHtml(
+                result.video_name ||
+                "—"
+              )}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        ${evidence}
+
+        ${sightingHtml}
+
+      `;
+
+    }
+
+
+    async function submitVideoSearch(
+      event
+    ) {
+
       event.preventDefault();
-      if(!selectedVideoPersonId){showToast("Please select a missing-person case first.","error");return;}
-      const file=document.getElementById("videoFile")?.files?.[0];
-      if(!file){showToast("Please select a surveillance video.","error");return;}
-      const formData=new FormData();
-      formData.append("person_id",String(selectedVideoPersonId)); formData.append("video",file);
-      const fields={camera_id:"videoCameraId",location:"videoLocation",latitude:"videoLatitude",longitude:"videoLongitude",notes:"videoNotes"};
-      Object.entries(fields).forEach(([key,id])=>{const value=document.getElementById(id).value.trim();if(value)formData.append(key,value);});
-      formData.append("reported_by",user?.name||"Admin User");
-      const button=document.getElementById("videoSearchButton"); button.disabled=true; button.textContent="Analyzing Video...";
-      showToast("AI is scanning the surveillance video...","info");
-      try{
-        const response=await fetch(API_BASE+"/api/video/search",{method:"POST",body:formData});
-        let result=null; try{result=await response.json();}catch{}
-        if(!response.ok) throw new Error(result?.detail||result?.message||`Video search failed (HTTP ${response.status}).`);
-        const hasMatch=Number(result.matches_found||0)>0;
-        showVideoSearchResult(result,hasMatch?"success":"warning");
-        showToast(hasMatch?"Potential surveillance sighting found.":"Video scanned. No confident match found.",hasMatch?"success":"info");
+
+
+      if (
+        !selectedVideoPersonId
+      ) {
+
+        showToast(
+          "Please select a missing-person case first.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const file =
+        document.getElementById(
+          "videoFile"
+        )?.files?.[0];
+
+
+      if (!file) {
+
+        showToast(
+          "Please select a surveillance video.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const formData =
+        new FormData();
+
+
+      formData.append(
+        "person_id",
+        String(
+          selectedVideoPersonId
+        )
+      );
+
+
+      formData.append(
+        "video",
+        file
+      );
+
+
+      const fields = {
+
+        camera_id:
+          "videoCameraId",
+
+        location:
+          "videoLocation",
+
+        latitude:
+          "videoLatitude",
+
+        longitude:
+          "videoLongitude",
+
+        notes:
+          "videoNotes"
+
+      };
+
+
+      Object.entries(
+        fields
+      ).forEach(
+        ([key, id]) => {
+
+          const element =
+            document.getElementById(
+              id
+            );
+
+
+          if (!element) {
+
+            return;
+
+          }
+
+
+          const value =
+            element.value.trim();
+
+
+          if (value) {
+
+            formData.append(
+              key,
+              value
+            );
+
+          }
+
+        }
+      );
+
+
+      formData.append(
+        "reported_by",
+        user?.name ||
+        "Admin User"
+      );
+
+
+      const button =
+        document.getElementById(
+          "videoSearchButton"
+        );
+
+
+      if (button) {
+
+        button.disabled =
+          true;
+
+        button.textContent =
+          "Analyzing Video...";
+
+      }
+
+
+      showToast(
+        "AI is scanning the surveillance video...",
+        "info"
+      );
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/video/search",
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+
+
+        let result =
+          null;
+
+
+        try {
+
+          result =
+            await response.json();
+
+        } catch {
+
+          result =
+            null;
+
+        }
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result?.detail ||
+            result?.message ||
+            `Video search failed (HTTP ${response.status}).`
+          );
+
+        }
+
+
+        const hasMatch =
+          Number(
+            result.matches_found ||
+            0
+          ) > 0;
+
+
+        showVideoSearchResult(
+          result,
+          hasMatch
+            ? "success"
+            : "warning"
+        );
+
+
+        showToast(
+          hasMatch
+            ? "Potential surveillance sighting found."
+            : "Video scanned. No confident match found.",
+          hasMatch
+            ? "success"
+            : "info"
+        );
+
+
         await loadCases();
-      }catch(error){console.error("Video surveillance search error:",error);showVideoSearchResult({message:error.message||"Unable to search the surveillance video."},"error");showToast(error.message||"Video search failed.","error");}
-      finally{button.disabled=false;button.textContent="Search Video";}
+
+
+      } catch (error) {
+
+        console.error(
+          "Video surveillance search error:",
+          error
+        );
+
+
+        showVideoSearchResult(
+          {
+            message:
+              error.message ||
+              "Unable to search the surveillance video."
+          },
+          "error"
+        );
+
+
+        showToast(
+          error.message ||
+          "Video search failed.",
+          "error"
+        );
+
+
+      } finally {
+
+        if (button) {
+
+          button.disabled =
+            false;
+
+          button.textContent =
+            "Search Video";
+
+        }
+
+      }
+
     }
 
-    document.addEventListener("click",event=>{const modal=document.getElementById("videoSearchModal");if(modal&&event.target===modal)closeVideoSearch();});
-    document.addEventListener("keydown",event=>{if(event.key==="Escape"&&document.getElementById("videoSearchModal")?.classList.contains("show"))closeVideoSearch();});
+
+    /* Close modal when clicking outside */
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const modal =
+          document.getElementById(
+            "videoSearchModal"
+          );
+
+
+        if (
+          modal &&
+          event.target === modal
+        ) {
+
+          closeVideoSearch();
+
+        }
+
+      }
+    );
+
+
+    /* Close modal with Escape */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        const modal =
+          document.getElementById(
+            "videoSearchModal"
+          );
+
+
+        if (
+          event.key === "Escape" &&
+          modal?.classList.contains(
+            "show"
+          )
+        ) {
+
+          closeVideoSearch();
+
+        }
+
+      }
+    );
+
 
     /* =====================================================
        LOGOUT
@@ -2360,6 +3369,21 @@
 
         },
         1000
+      );
+
+    }
+
+
+    /* =====================================================
+       BACKWARD-COMPATIBILITY FOR OLD BUTTON REFERENCES
+    ====================================================== */
+
+    function analyzeCase(
+      id
+    ) {
+
+      openVideoSearch(
+        id
       );
 
     }
