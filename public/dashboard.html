@@ -2264,6 +2264,46 @@
        FORMAT STATUS
     ====================================================== */
 
+
+    /* =====================================================
+       SURVEILLANCE STATS
+       Reads the latest surveillance result persisted in the
+       person's description by the video-search backend.
+    ====================================================== */
+
+    function getSurveillanceStats(person) {
+      const description = String(person?.description || "");
+
+      const similarityMatch = description.match(
+        /Similarity\s*:\s*(-?\d+(?:\.\d+)?)\s*%/i
+      );
+
+      const matchesMatch = description.match(
+        /Matches\s*:\s*(\d+)/i
+      );
+
+      const timestampMatch = description.match(
+        /Timestamp\s*:\s*(-?\d+(?:\.\d+)?)\s*seconds/i
+      );
+
+      const isFound =
+        String(person?.status || "").toLowerCase() === "found" ||
+        /Surveillance potential sighting detected\./i.test(description);
+
+      return {
+        found: isFound,
+        confidence: similarityMatch
+          ? `${parseFloat(similarityMatch[1]).toFixed(2)}%`
+          : "—",
+        matches: matchesMatch
+          ? matchesMatch[1]
+          : (isFound ? "1" : "—"),
+        timestamp: timestampMatch
+          ? `${parseFloat(timestampMatch[1]).toFixed(2)}s`
+          : "—"
+      };
+    }
+
     function formatStatus(
       status
     ) {
@@ -2590,6 +2630,9 @@
                   person.name ||
                   "Unknown";
 
+                const surveillanceStats =
+                  getSurveillanceStats(person);
+
 
                 return `
 
@@ -2685,13 +2728,23 @@
                     </td>
 
 
-                    <td>
-                      —
+                    <td
+                      style="
+                        font-weight: 700;
+                        color: ${surveillanceStats.found ? "var(--success)" : "var(--text)"};
+                      "
+                    >
+                      ${escapeHtml(surveillanceStats.confidence)}
                     </td>
 
 
-                    <td>
-                      —
+                    <td
+                      style="
+                        font-weight: 700;
+                        color: ${surveillanceStats.found ? "var(--success)" : "var(--text)"};
+                      "
+                    >
+                      ${escapeHtml(surveillanceStats.matches)}
                     </td>
 
 
