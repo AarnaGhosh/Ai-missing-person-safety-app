@@ -101,8 +101,16 @@
     }
 
     .popup-status {
-      font-weight: 600;
+      font-weight: 700;
     }
+
+    .trace-map-marker {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.35);
+    }
+    .trace-map-marker.missing { background: #e74c3c; }
+    .trace-map-marker.found { background: #27ae60; }
 
     @media (max-width: 768px) {
       #dashboardMap {
@@ -1784,6 +1792,22 @@
 
 
     /* =====================================================
+       STATUS MARKER ICON
+    ====================================================== */
+
+    function createStatusMarkerIcon(status) {
+      const value = String(status || "").toLowerCase();
+      const found = value === "found" || value === "resolved" || value === "matched";
+      return L.divIcon({
+        className: "",
+        html: `<div class="trace-map-marker ${found ? "found" : "missing"}" title="${found ? "Found" : "Not Found"}"></div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12]
+      });
+    }
+
+    /* =====================================================
        INITIALIZE MAP
     ====================================================== */
 
@@ -1994,17 +2018,9 @@
 
           const marker =
             L.marker(
-              [
-                coordinates.latitude,
-                coordinates.longitude
-              ],
-              {
-                icon:
-                  defaultMarkerIcon
-              }
-            ).addTo(
-              dashboardMap
-            );
+              [coordinates.latitude, coordinates.longitude],
+              { icon: createStatusMarkerIcon(person.status) }
+            ).addTo(dashboardMap);
 
 
           const statusText =
@@ -2251,34 +2267,11 @@
     function formatStatus(
       status
     ) {
-
-      const value =
-        String(
-          status || ""
-        ).toLowerCase();
-
-
-      if (
-        value === "found" ||
-        value === "resolved"
-      ) {
-
-        return "Resolved";
-
+      const value = String(status || "").toLowerCase();
+      if (value === "found" || value === "resolved" || value === "matched") {
+        return "Found";
       }
-
-
-      if (
-        value === "matched"
-      ) {
-
-        return "Matched";
-
-      }
-
-
-      return "Active";
-
+      return "Not Found";
     }
 
 
@@ -2571,27 +2564,9 @@
 
 
                 let badgeClass =
-                  "badge-active";
-
-
-                if (
-                  status === "Matched"
-                ) {
-
-                  badgeClass =
-                    "badge-matched";
-
-                }
-
-
-                if (
-                  status === "Resolved"
-                ) {
-
-                  badgeClass =
-                    "badge-resolved";
-
-                }
+                  status === "Found"
+                    ? "badge-resolved"
+                    : "badge-active";
 
 
                 const date =
@@ -3441,6 +3416,59 @@
     }
 
 
+    async function persistVideoSighting(personId, result) {
+      const person = allPersons.find(p => Number(p.id) === Number(personId));
+      if (!person) return false;
+
+      const token = localStorage.getItem("safetrace_token");
+      if (!token) {
+        console.warn("No authentication token available; case status was not persisted.");
+        return false;
+      }
+
+      const location = result.location || "Surveillance location";
+      const camera = result.camera_id || "Camera not specified";
+      const timestamp = formatSeconds(result.best_timestamp_seconds);
+      const similarity = Number(result.best_similarity || 0).toFixed(2);
+      const lat = Number(result.latitude);
+      const lng = Number(result.longitude);
+      const gpsLine = Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0)
+        ? `GPS Coordinates: ${lat}, ${lng}` : "";
+      const sightingNote = [
+        "Surveillance potential sighting detected.",
+        `Location: ${location}`,
+        `Camera: ${camera}`,
+        `Timestamp: ${timestamp}`,
+        `Similarity: ${similarity}%`,
+        gpsLine
+      ].filter(Boolean).join("\n");
+      const existingDescription = person.description || "";
+      const description = existingDescription.includes("Surveillance potential sighting detected.")
+        ? existingDescription
+        : `${existingDescription}${existingDescription ? "\n\n" : ""}${sightingNote}`;
+
+      const response = await fetch(API_BASE + "/api/persons/" + personId, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ status: "found", description })
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(errorBody?.detail || `Could not update case status (HTTP ${response.status}).`);
+      }
+
+      person.status = "found";
+      person.description = description;
+      if (result.location) person.last_seen_location = result.location;
+      return true;
+    }
+
+
     async function submitVideoSearch(
       event
     ) {
@@ -3648,6 +3676,15 @@
             : "info"
         );
 
+        if (hasMatch) {
+          try {
+            await persistVideoSighting(selectedVideoPersonId, result);
+            showToast("Case marked Found and map updated.", "success");
+          } catch (statusError) {
+            console.error("Could not persist found status:", statusError);
+            showToast("Match found, but the case status could not be saved.", "error");
+          }
+        }
 
         await loadCases();
 
