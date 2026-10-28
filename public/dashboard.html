@@ -3417,57 +3417,15 @@
 
 
     async function persistVideoSighting(personId, result) {
+      // The surveillance endpoint now marks the case as FOUND
+      // and stores the surveillance GPS coordinates server-side.
+      // Refreshing cases below is therefore the single source of truth.
       const person = allPersons.find(p => Number(p.id) === Number(personId));
-      if (!person) return false;
-
-      const token = localStorage.getItem("safetrace_token");
-      if (!token) {
-        console.warn("No authentication token available; case status was not persisted.");
-        return false;
+      if (person) {
+        person.status = "found";
       }
-
-      const location = result.location || "Surveillance location";
-      const camera = result.camera_id || "Camera not specified";
-      const timestamp = formatSeconds(result.best_timestamp_seconds);
-      const similarity = Number(result.best_similarity || 0).toFixed(2);
-      const lat = Number(result.latitude);
-      const lng = Number(result.longitude);
-      const gpsLine = Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0)
-        ? `GPS Coordinates: ${lat}, ${lng}` : "";
-      const sightingNote = [
-        "Surveillance potential sighting detected.",
-        `Location: ${location}`,
-        `Camera: ${camera}`,
-        `Timestamp: ${timestamp}`,
-        `Similarity: ${similarity}%`,
-        gpsLine
-      ].filter(Boolean).join("\n");
-      const existingDescription = person.description || "";
-      const description = existingDescription.includes("Surveillance potential sighting detected.")
-        ? existingDescription
-        : `${existingDescription}${existingDescription ? "\n\n" : ""}${sightingNote}`;
-
-      const response = await fetch(API_BASE + "/api/persons/" + personId, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": "Bearer " + token
-        },
-        body: JSON.stringify({ status: "found", description })
-      });
-
-      if (!response.ok) {
-        const errorBody = await response.json().catch(() => null);
-        throw new Error(errorBody?.detail || `Could not update case status (HTTP ${response.status}).`);
-      }
-
-      person.status = "found";
-      person.description = description;
-      if (result.location) person.last_seen_location = result.location;
       return true;
     }
-
 
     async function submitVideoSearch(
       event
@@ -3679,10 +3637,10 @@
         if (hasMatch) {
           try {
             await persistVideoSighting(selectedVideoPersonId, result);
-            showToast("Case marked Found and map updated.", "success");
+            showToast("Case marked Found. Refreshing dashboard and map...", "success");
           } catch (statusError) {
             console.error("Could not persist found status:", statusError);
-            showToast("Match found, but the case status could not be saved.", "error");
+            showToast("Match found, but the dashboard could not be refreshed.", "error");
           }
         }
 
